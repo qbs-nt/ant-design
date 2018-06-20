@@ -22,6 +22,7 @@ export interface AntdTreeNodeAttribute {
   disableCheckbox: boolean;
 }
 export interface AntTreeNodeProps {
+  className: string;
   disabled?: boolean;
   disableCheckbox?: boolean;
   title?: string | React.ReactNode;
@@ -106,7 +107,7 @@ export interface TreeProps {
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
-  static TreeNode: React.ComponentType<AntTreeNodeProps> = TreeNode;
+  static TreeNode: React.ComponentClass<AntTreeNodeProps> = TreeNode;
 
   static defaultProps = {
     prefixCls: 'ant-tree',
