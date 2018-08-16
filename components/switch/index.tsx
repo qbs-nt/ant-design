@@ -15,6 +15,7 @@ export interface SwitchProps {
   unCheckedChildren?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
+  title?: string;
 }
 
 export default class Switch extends React.Component<SwitchProps, {}> {
