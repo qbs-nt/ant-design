@@ -20,6 +20,7 @@ title: Modal
 | afterClose | Modal 完全关闭后的回调 | function | 无 |
 | bodyStyle | Modal body 样式 | object | {} |
 | cancelText | 取消按钮文字 | string | 取消 |
+| centered | 垂直居中展示 Modal | Boolean | `false` |
 | closable | 是否显示右上角的关闭按钮 | boolean | true |
 | confirmLoading | 确定按钮 loading | boolean | 无 |
 | destroyOnClose | 关闭时销毁 Modal 里的子元素 | boolean | false |
@@ -31,6 +32,8 @@ title: Modal
 | maskStyle | 遮罩样式 | object | {} |
 | okText | 确认按钮文字 | string | 确定 |
 | okType | 确认按钮类型 | string | primary |
+| okButtonProps | ok 按钮 props | [ButtonProps](/components/button) | - |
+| cancelButtonProps | cancel 按钮 props | [ButtonProps](/components/button) | - |
 | style | 可用于设置浮层的样式，调整浮层位置等 | object | - |
 | title | 标题 | string\|ReactNode | 无 |
 | visible | 对话框是否可见 | boolean | 无 |
@@ -59,6 +62,7 @@ title: Modal
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | cancelText | 取消按钮文字 | string | 取消 |
+| centered | 垂直居中展示 Modal | Boolean | `false` |
 | className | 容器类名 | string | - |
 | content | 内容 | string\|ReactNode | 无 |
 | iconType | 图标 Icon 类型 | string | question-circle |

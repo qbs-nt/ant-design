@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import createDOMForm from 'rc-form/lib/createDOMForm';
 import createFormField from 'rc-form/lib/createFormField';
@@ -40,7 +40,7 @@ export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export type ValidationRule = {
   /** validation error message */
-  message?: string;
+  message?: React.ReactNode;
   /** built-in validation type, available options: https://github.com/yiminghe/async-validator#type */
   type?: string;
   /** indicates whether field is required */

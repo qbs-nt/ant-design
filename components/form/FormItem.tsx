@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import intersperse from 'intersperse';
 import Animate from 'rc-animate';
@@ -98,7 +98,7 @@ export default class FormItem extends React.Component<FormItemProps, any> {
       if (!child.props) {
         continue;
       }
-      if (FIELD_META_PROP in child.props) { // And means FIELD_DATA_PROP in chidl.props, too.
+      if (FIELD_META_PROP in child.props) { // And means FIELD_DATA_PROP in child.props, too.
         controls.push(child);
       } else if (child.props.children) {
         controls = controls.concat(this.getControls(child.props.children, recursively));
