@@ -7,7 +7,6 @@ describe('Test utils function', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   it('throttle function should work', () => {

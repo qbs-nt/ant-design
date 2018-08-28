@@ -8,7 +8,7 @@ describe('BackTop', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
+    // jest.useRealTimers();
   });
 
   it('should scroll to top after click it', () => {

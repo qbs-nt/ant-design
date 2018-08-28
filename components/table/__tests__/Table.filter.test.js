@@ -273,7 +273,6 @@ describe('Table.filter', () => {
     dropdownWrapper.find('.confirm').simulate('click');
     wrapper.update();
     expect(renderedNames(wrapper)).toEqual(['Jack']);
-    jest.useRealTimers();
   });
 
   it('works with JSX in controlled mode', () => {

@@ -8,7 +8,6 @@ describe('Alert', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   it('could be closed', () => {

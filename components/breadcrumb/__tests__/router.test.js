@@ -63,7 +63,6 @@ describe('react router', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
   // https://github.com/airbnb/enzyme/issues/875
   it('react router 4', () => {

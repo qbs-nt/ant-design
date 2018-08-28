@@ -74,7 +74,6 @@ describe('Modal.confirm triggers callbacks correctly', () => {
       expect($$('.ant-confirm')).toHaveLength(1);
       jest.runAllTimers();
       expect($$('.ant-confirm')).toHaveLength(0);
-      jest.useRealTimers();
     });
   }
 
@@ -96,7 +95,6 @@ describe('Modal.confirm triggers callbacks correctly', () => {
       jest.runAllTimers();
       expect($$(`.ant-confirm-${type}`)).toHaveLength(0);
     });
-    jest.useRealTimers();
   });
 
   it('could be update', () => {
@@ -119,7 +117,6 @@ describe('Modal.confirm triggers callbacks correctly', () => {
       instance.destroy();
       jest.runAllTimers();
     });
-    jest.useRealTimers();
   });
 
   it('could be destroy', () => {
@@ -134,6 +131,5 @@ describe('Modal.confirm triggers callbacks correctly', () => {
       jest.runAllTimers();
       expect($$(`.ant-confirm-${type}`)).toHaveLength(0);
     });
-    jest.useRealTimers();
   });
 });

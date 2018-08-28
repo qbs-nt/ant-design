@@ -14,7 +14,6 @@ export default function focusTest(Component) {
     });
 
     afterAll(() => {
-      jest.useRealTimers();
     });
 
     afterEach(() => {

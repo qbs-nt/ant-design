@@ -10,7 +10,6 @@ describe('Card', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   function fakeResizeWindowTo(wrapper, width) {

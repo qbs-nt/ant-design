@@ -87,6 +87,8 @@ export default class Button extends React.Component<ButtonProps, any> {
     block: PropTypes.bool,
   };
 
+  node: HTMLAnchorElement | HTMLButtonElement;
+
   private delayTimeout: number;
 
   constructor(props: ButtonProps) {
@@ -96,6 +98,9 @@ export default class Button extends React.Component<ButtonProps, any> {
       hasTwoCNChar: false,
     };
   }
+
+  saveLink = (link: HTMLAnchorElement) => this.node = link;
+  saveButton = (button: HTMLButtonElement) => this.node = button;
 
   componentDidMount() {
     this.fixTwoCNChar();
@@ -155,6 +160,14 @@ export default class Button extends React.Component<ButtonProps, any> {
     return React.Children.count(children) === 1 && !icon;
   }
 
+  focus() {
+    this.node.focus();
+  }
+
+  blur() {
+    this.node.blur();
+  }
+
   render() {
     const {
       type, shape, size, className, children, icon, prefixCls, ghost, loading: _loadingProp, block, ...rest
@@ -197,6 +210,7 @@ export default class Button extends React.Component<ButtonProps, any> {
           {...rest}
           className={classes}
           onClick={this.handleClick}
+          ref={this.saveLink}
         >
           {iconNode}{kids}
         </a>
@@ -212,6 +226,7 @@ export default class Button extends React.Component<ButtonProps, any> {
             type={htmlType || 'button'}
             className={classes}
             onClick={this.handleClick}
+            ref={this.saveButton}
           >
             {iconNode}{kids}
           </button>

@@ -24,16 +24,15 @@ describe('Input', () => {
   });
 });
 
-focusTest(TextArea);
-
 describe('TextArea', () => {
   beforeAll(() => {
     jest.useFakeTimers();
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
+
+  focusTest(TextArea);
 
   it('should auto calculate height according to content length', () => {
     const wrapper = mount(
@@ -61,6 +60,7 @@ describe('TextArea', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+  focusTest(TextArea);
 });
 
 describe('As Form Control', () => {

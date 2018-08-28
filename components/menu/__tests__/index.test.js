@@ -11,7 +11,6 @@ describe('Menu', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
   });
 
   it('If has select nested submenu item ,the menu items on the grandfather level should be highlight', () => {
@@ -232,7 +231,6 @@ describe('Menu', () => {
     });
 
     afterEach(() => {
-      jest.useRealTimers();
     });
 
     const toggleMenu = (wrapper, index, event) => {

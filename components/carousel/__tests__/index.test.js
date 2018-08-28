@@ -8,7 +8,6 @@ describe('Carousel', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   it('should has innerSlider', () => {
@@ -38,7 +37,7 @@ describe('Carousel', () => {
   });
 
   it('should trigger autoPlay after window resize', async () => {
-    jest.useRealTimers();
+    // jest.useRealTimers();
     const wrapper = mount(<Carousel autoplay><div>1</div><div>2</div><div>3</div></Carousel>);
     const spy = jest.spyOn(wrapper.instance().slick.innerSlider, 'autoPlay');
     window.resizeTo(1000);

@@ -9,7 +9,6 @@ describe('message', () => {
 
   afterEach(() => {
     message.destroy();
-    jest.useRealTimers();
   });
 
   it('should be able to config top', () => {

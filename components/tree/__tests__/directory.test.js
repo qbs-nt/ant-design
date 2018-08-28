@@ -11,7 +11,6 @@ describe('Directory Tree', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   function createTree(props) {

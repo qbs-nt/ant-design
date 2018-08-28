@@ -10,7 +10,6 @@ describe('Mention', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   it('should has focus function', () => {

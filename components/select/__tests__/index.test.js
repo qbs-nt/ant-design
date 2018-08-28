@@ -13,7 +13,6 @@ describe('Select', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
   });
 
   it('should have default notFoundContent', () => {

@@ -60,7 +60,6 @@ describe('Popconfirm', () => {
     popconfirm.setProps({ visible: false });
     jest.runAllTimers();
     expect(popconfirm.instance().getPopupDomNode().className).toContain('ant-popover-hidden');
-    jest.useRealTimers();
   });
 
   it('should trigger onConfirm and onCancel', () => {

@@ -6,7 +6,6 @@ describe('notification', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   afterEach(() => {

@@ -9,7 +9,6 @@ describe('Badge', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
   });
 
   it('badge dot not scaling count > 9', () => {

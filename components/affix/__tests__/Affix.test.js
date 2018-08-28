@@ -55,7 +55,6 @@ describe('Affix Render', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   const scrollTo = (top) => {

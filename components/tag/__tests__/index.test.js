@@ -8,7 +8,6 @@ describe('Tag', () => {
   });
 
   afterAll(() => {
-    jest.useRealTimers();
   });
 
   it('should be closable', () => {
