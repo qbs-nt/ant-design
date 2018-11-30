@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import DocumentTitle from 'react-document-title';
 import { getChildren } from 'jsonml.js/lib/utils';
 import { Timeline, Alert, Affix } from 'antd';
-import delegate from 'delegate';
 import EditButton from './EditButton';
 import { ping } from '../utils';
 
@@ -14,12 +13,6 @@ export default class Article extends React.Component {
   }
 
   componentDidMount() {
-    // Add ga event click
-    this.delegation = delegate(this.node, '.resource-card', 'click', (e) => {
-      if (window.ga) {
-        window.ga('send', 'event', 'Download', 'resource', e.delegateTarget.href);
-      }
-    }, false);
     this.componentDidUpdate();
   }
 
@@ -30,7 +23,9 @@ export default class Article extends React.Component {
     }
     this.pingTimer = ping((status) => {
       if (status !== 'timeout' && status !== 'error') {
-        links.forEach(link => (link.style.display = 'block'));
+        links.forEach((link) => {
+          link.style.display = 'block'; // eslint-disable-line
+        });
       } else {
         links.forEach(link => link.parentNode.removeChild(link));
       }
@@ -39,9 +34,17 @@ export default class Article extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.pingTimer);
-    if (this.delegation) {
-      this.delegation.destroy();
+  }
+
+  onResourceClick = (e) => {
+    const cardNode = e.target.closest('.resource-card');
+    if (!window.gtag || !cardNode) {
+      return;
     }
+    window.gtag('event', 'resource', {
+      event_category: 'Download',
+      event_label: cardNode.href,
+    });
   }
 
   getArticle(article) {
@@ -78,7 +81,8 @@ export default class Article extends React.Component {
     const isNotTranslated = locale === 'en-US' && typeof title === 'object';
     return (
       <DocumentTitle title={`${title[locale] || title} - Ant Design`}>
-        <article className="markdown" ref={(node) => { this.node = node; }}>
+        { /* eslint-disable-next-line */ }
+        <article className="markdown" onClick={this.onResourceClick}>
           {isNotTranslated && (
             <Alert
               type="warning"

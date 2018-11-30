@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'bisheng/router';
-import { Row, Col, Menu, Icon } from 'antd';
+import {
+  Row, Col, Menu, Icon,
+} from 'antd';
 import classNames from 'classnames';
 import MobileMenu from 'rc-drawer';
 import Article from './Article';
@@ -33,28 +35,39 @@ function fileNameToPath(filename) {
   return snippets[snippets.length - 1];
 }
 
-export default class MainContent extends React.Component {
+const getSideBarOpenKeys = (nextProps) => {
+  const { themeConfig } = nextProps;
+  const { pathname } = nextProps.location;
+  const locale = utils.isZhCN(pathname) ? 'zh-CN' : 'en-US';
+  const moduleData = getModuleData(nextProps);
+  const shouldOpenKeys = utils.getMenuItems(
+    moduleData,
+    locale,
+    themeConfig.categoryOrder,
+    themeConfig.typeOrder
+  ).map(m => m.title[locale] || m.title);
+  return shouldOpenKeys;
+};
+
+export default class MainContent extends React.PureComponent {
   static contextTypes = {
     intl: PropTypes.object.isRequired,
     isMobile: PropTypes.bool.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      openKeys: this.getSideBarOpenKeys(props) || [],
-    };
+  state = {
+    openKeys: undefined,
   }
 
   componentDidMount() {
     this.componentDidUpdate();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const openKeys = this.getSideBarOpenKeys(nextProps);
-    if (openKeys) {
-      this.setState({ openKeys });
-    }
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      openKeys: getSideBarOpenKeys(props),
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -62,109 +75,25 @@ export default class MainContent extends React.Component {
     if (!prevProps || prevProps.location.pathname !== location.pathname) {
       this.bindScroller();
     }
-    if (!prevProps || (!window.location.hash && prevProps && prevProps.location.pathname !== location.pathname)) {
-      document.body.scrollTop = 0;
+    if (!window.location.hash && prevProps && prevProps.location.pathname !== location.pathname) {
       document.documentElement.scrollTop = 0;
-      return;
     }
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      if (window.location.hash) {
-        document.querySelector(window.location.hash).scrollIntoView();
+    setTimeout(() => {
+      if (
+        window.location.hash
+        && document.querySelector(decodeURIComponent(window.location.hash))
+        && document.documentElement.scrollTop === 0
+      ) {
+        document.querySelector(decodeURIComponent(window.location.hash)).scrollIntoView();
       }
-    }, 10);
+    }, 0);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer);
     this.scroller.disable();
   }
 
-  bindScroller() {
-    if (this.scroller) {
-      this.scroller.disable();
-    }
-    require('intersection-observer'); // eslint-disable-line
-    const scrollama = require('scrollama'); // eslint-disable-line
-    this.scroller = scrollama();
-    this.scroller
-      .setup({
-        step: '.markdown > h2, .code-box', // required
-        offset: 0,
-      })
-      .onStepEnter(({ element }) => {
-        [].forEach.call(document.querySelectorAll('.toc-affix li a'), (node) => {
-          node.className = '';
-        });
-        const currentNode = document.querySelectorAll(`.toc-affix li a[href="#${element.id}"]`)[0];
-        if (currentNode) {
-          currentNode.className = 'current';
-        }
-      });
-  }
-
-  handleMenuOpenChange = (openKeys) => {
-    this.setState({ openKeys });
-  }
-
-  getSideBarOpenKeys(nextProps) {
-    const { themeConfig } = nextProps;
-    const { pathname } = nextProps.location;
-    const prevModule = this.currentModule;
-    this.currentModule = pathname.replace(/^\//).split('/')[1] || 'components';
-    if (this.currentModule === 'react') {
-      this.currentModule = 'components';
-    }
-    const locale = utils.isZhCN(pathname) ? 'zh-CN' : 'en-US';
-    if (prevModule !== this.currentModule) {
-      const moduleData = getModuleData(nextProps);
-      const shouldOpenKeys = utils.getMenuItems(
-        moduleData,
-        locale,
-        themeConfig.categoryOrder,
-        themeConfig.typeOrder
-      ).map(m => m.title[locale] || m.title);
-      return shouldOpenKeys;
-    }
-  }
-
-  generateMenuItem(isTop, item) {
-    const { intl: { locale } } = this.context;
-    const key = fileNameToPath(item.filename);
-    const title = item.title[locale] || item.title;
-    const text = isTop ? title : [
-      <span key="english">{title}</span>,
-      <span className="chinese" key="chinese">{item.subtitle}</span>,
-    ];
-    const { disabled } = item;
-    const url = item.filename.replace(/(\/index)?((\.zh-CN)|(\.en-US))?\.md$/i, '').toLowerCase();
-    const child = !item.link ? (
-      <Link
-        to={utils.getLocalizedPathname(/^components/.test(url) ? `${url}/` : url, locale === 'zh-CN')}
-        disabled={disabled}
-      >
-        {text}
-      </Link>) : (
-        <a
-          href={item.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          disabled={disabled}
-          className="menu-item-link-outside"
-        >
-          {text} <Icon type="export" />
-        </a>);
-
-    return (
-      <Menu.Item key={key.toLowerCase()} disabled={disabled}>
-        {child}
-      </Menu.Item>
-    );
-  }
-
-  getMenuItems() {
+  getMenuItems(footerNavIcons = {}) {
     const { themeConfig } = this.props;
     const { intl: { locale } } = this.context;
     const moduleData = getModuleData(this.props);
@@ -182,29 +111,21 @@ export default class MainContent extends React.Component {
               if (child.type === 'type') {
                 return (
                   <Menu.ItemGroup title={child.title} key={child.title}>
-                    {child.children.sort((a, b) => {
-                      return a.title.charCodeAt(0) - b.title.charCodeAt(0);
-                    }).map(leaf => this.generateMenuItem(false, leaf))}
+                    {
+                      child.children
+                        .sort((a, b) => a.title.charCodeAt(0) - b.title.charCodeAt(0))
+                        .map(leaf => this.generateMenuItem(false, leaf, footerNavIcons))
+                    }
                   </Menu.ItemGroup>
                 );
               }
-              return this.generateMenuItem(false, child);
+              return this.generateMenuItem(false, child, footerNavIcons);
             })}
           </SubMenu>
         );
       }
-      return this.generateMenuItem(true, menuItem);
+      return this.generateMenuItem(true, menuItem, footerNavIcons);
     });
-  }
-
-  flattenMenu(menu) {
-    if (menu && menu.type && menu.type.isMenuItem) {
-      return menu;
-    }
-    if (Array.isArray(menu)) {
-      return menu.reduce((acc, item) => acc.concat(this.flattenMenu(item)), []);
-    }
-    return this.flattenMenu((menu.props && menu.props.children) || menu.children);
   }
 
   getFooterNav(menuItems, activeMenuItem) {
@@ -220,13 +141,88 @@ export default class MainContent extends React.Component {
     return { prev, next };
   }
 
+  handleMenuOpenChange = (openKeys) => {
+    this.setState({ openKeys });
+  }
+
+  bindScroller() {
+    if (this.scroller) {
+      this.scroller.disable();
+    }
+    require('intersection-observer'); // eslint-disable-line
+    const scrollama = require('scrollama'); // eslint-disable-line
+    this.scroller = scrollama();
+    this.scroller
+      .setup({
+        step: '.markdown > h2, .code-box', // required
+        offset: 0,
+      })
+      .onStepEnter(({ element }) => {
+        [].forEach.call(document.querySelectorAll('.toc-affix li a'), (node) => {
+          node.className = ''; // eslint-disable-line
+        });
+        const currentNode = document.querySelectorAll(`.toc-affix li a[href="#${element.id}"]`)[0];
+        if (currentNode) {
+          currentNode.className = 'current';
+        }
+      });
+  }
+
+  generateMenuItem(isTop, item, { before = null, after = null }) {
+    const { intl: { locale } } = this.context;
+    const key = fileNameToPath(item.filename);
+    const title = item.title[locale] || item.title;
+    const text = isTop ? title : [
+      <span key="english">{title}</span>,
+      <span className="chinese" key="chinese">{item.subtitle}</span>,
+    ];
+    const { disabled } = item;
+    const url = item.filename.replace(/(\/index)?((\.zh-CN)|(\.en-US))?\.md$/i, '').toLowerCase();
+    const child = !item.link ? (
+      <Link
+        to={utils.getLocalizedPathname(/^components/.test(url) ? `${url}/` : url, locale === 'zh-CN')}
+        disabled={disabled}
+      >
+        {before}{text}{after}
+      </Link>) : (
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          disabled={disabled}
+          className="menu-item-link-outside"
+        >
+          {before}{text} <Icon type="export" />{after}
+        </a>);
+
+    return (
+      <Menu.Item key={key.toLowerCase()} disabled={disabled}>
+        {child}
+      </Menu.Item>
+    );
+  }
+
+  flattenMenu(menu) {
+    if (menu && menu.type && menu.type.isMenuItem) {
+      return menu;
+    }
+    if (Array.isArray(menu)) {
+      return menu.reduce((acc, item) => acc.concat(this.flattenMenu(item)), []);
+    }
+    return this.flattenMenu((menu.props && menu.props.children) || menu.children);
+  }
+
   render() {
     const { props } = this;
     const { isMobile } = this.context;
     const { openKeys } = this.state;
     const activeMenuItem = getActiveMenuItem(props);
     const menuItems = this.getMenuItems();
-    const { prev, next } = this.getFooterNav(menuItems, activeMenuItem);
+    const menuItemsForFooterNav = this.getMenuItems({
+      before: <Icon className="footer-nav-icon-before" type="left" />,
+      after: <Icon className="footer-nav-icon-after" type="right" />,
+    });
+    const { prev, next } = this.getFooterNav(menuItemsForFooterNav, activeMenuItem);
     const { localizedPageData } = props;
     const mainContainerClass = classNames('main-container', {
       'main-container-component': !!props.demos,

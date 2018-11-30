@@ -125,6 +125,10 @@ export default class Page1 extends React.PureComponent {
     hoverKey: null,
   }
 
+  leave = {
+    opacity: 0, duration: 300, x: 100, y: 150, ease: 'easeInBack',
+  };
+
   onMouseOver = (key) => {
     this.setState({
       hoverKey: key,
@@ -175,10 +179,6 @@ export default class Page1 extends React.PureComponent {
     );
   });
 
-  leave = {
-    opacity: 0, duration: 300, x: 100, y: 150, ease: 'easeInBack',
-  };
-
   render() {
     const { locale, isMobile } = this.props;
     const { hoverKey } = this.state;
@@ -193,7 +193,8 @@ export default class Page1 extends React.PureComponent {
             leave={this.leave}
             {...item.svgBg.props}
             component="svg"
-            resetStyleBool={false}
+            resetStyle={false}
+            exclusive
           >
             {(isMobile || isHover) && this.getSvgChild(item.svgBg.props.children)}
           </TweenOneGroup>

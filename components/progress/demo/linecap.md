@@ -7,11 +7,11 @@ title:
 
 ## zh-CN
 
-`strokeLinecap="square|round"` 可以调整进度条边缘的形状。
+通过设定 `strokeLinecap="square|round"` 可以调整进度条边缘的形状。
 
 ## en-US
 
-By setting `strokeLinecap="square`, you can change the linecaps from round to square.
+By setting `strokeLinecap="square"`, you can change the linecaps from round to square.
 
 ````jsx
 import { Progress } from 'antd';
@@ -22,5 +22,6 @@ ReactDOM.render(
     <Progress strokeLinecap="square" type="circle" percent={75} />
     <Progress strokeLinecap="square" type="dashboard" percent={75} />
   </div>,
-  mountNode);
+  mountNode
+);
 ````

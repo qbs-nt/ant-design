@@ -6,15 +6,16 @@ import { addLocaleData, IntlProvider } from 'react-intl';
 import 'moment/locale/zh-cn';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import OfflineRuntime from '@yesmeck/offline-plugin/runtime';
 import Header from './Header';
 import Footer from './Footer';
 import enLocale from '../../en-US';
 import cnLocale from '../../zh-CN';
 import * as utils from '../utils';
 
-if (typeof window !== 'undefined') {
-  OfflineRuntime.install();
+if (typeof window !== 'undefined' && navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach(registration => registration.unregister());
+  });
 }
 
 if (typeof window !== 'undefined') {
@@ -42,11 +43,6 @@ export default class Layout extends React.Component {
     isMobile: PropTypes.bool,
   };
 
-  getChildContext() {
-    const { isMobile: mobile } = this.state;
-    return { isMobile: mobile };
-  }
-
   constructor(props) {
     super(props);
     const { pathname } = props.location;
@@ -57,6 +53,11 @@ export default class Layout extends React.Component {
       appLocale,
       isMobile,
     };
+  }
+
+  getChildContext() {
+    const { isMobile: mobile } = this.state;
+    return { isMobile: mobile };
   }
 
   componentDidMount() {
@@ -95,15 +96,17 @@ export default class Layout extends React.Component {
     const { appLocale } = this.state;
 
     return (
-      <IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
-        <LocaleProvider locale={appLocale.locale === 'zh-CN' ? zhCN : null}>
-          <div className="page-wrapper">
-            <Header {...restProps} />
-            {children}
-            <Footer {...restProps} />
-          </div>
-        </LocaleProvider>
-      </IntlProvider>
+      <React.StrictMode>
+        <IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+          <LocaleProvider locale={appLocale.locale === 'zh-CN' ? zhCN : null}>
+            <div className="page-wrapper">
+              <Header {...restProps} />
+              {children}
+              <Footer {...restProps} />
+            </div>
+          </LocaleProvider>
+        </IntlProvider>
+      </React.StrictMode>
     );
   }
 }
