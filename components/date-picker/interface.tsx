@@ -22,6 +22,7 @@ export interface PickerProps {
   disabledDate?: (current: moment.Moment) => boolean;
   renderExtraFooter?: () => React.ReactNode;
   dateRender?: (current: moment.Moment, today: moment.Moment) => React.ReactNode;
+  autoFocus?: boolean;
 }
 
 export interface SinglePickerProps {
