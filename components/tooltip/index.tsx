@@ -50,6 +50,7 @@ export interface AbstractTooltipProps extends ConfigProviderProps {
   children?: React.ReactNode;
   // align is a more higher api
   align?: TooltipAlignConfig;
+  destroyTooltipOnHide?: boolean;
 }
 
 export type RenderFunction = () => React.ReactNode;
