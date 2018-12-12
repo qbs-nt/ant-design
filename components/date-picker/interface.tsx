@@ -37,10 +37,12 @@ export interface DatePickerProps extends PickerProps, SinglePickerProps {
   showTime?: TimePickerProps | boolean;
   showToday?: boolean;
   open?: boolean;
-  disabledTime?: (current: moment.Moment) => {
-    disabledHours?: () => number[],
-    disabledMinutes?: () => number[],
-    disabledSeconds?: () => number[],
+  disabledTime?: (
+    current: moment.Moment,
+  ) => {
+    disabledHours?: () => number[];
+    disabledMinutes?: () => number[];
+    disabledSeconds?: () => number[];
   };
   onOpenChange?: (status: boolean) => void;
   onOk?: (selectedTime: RangePickerValue) => void;
@@ -53,10 +55,10 @@ export interface MonthPickerProps extends PickerProps, SinglePickerProps {
 }
 
 export type RangePickerValue =
-  undefined[] |
-  [moment.Moment] |
-  [undefined, moment.Moment] |
-  [moment.Moment, moment.Moment];
+  | undefined[]
+  | [moment.Moment]
+  | [undefined, moment.Moment]
+  | [moment.Moment, moment.Moment];
 export type RangePickerPresetRange = RangePickerValue | (() => RangePickerValue);
 
 export interface RangePickerProps extends PickerProps {
@@ -69,14 +71,17 @@ export interface RangePickerProps extends PickerProps {
   onOk?: (selectedTime: moment.Moment) => void;
   showTime?: TimePickerProps | boolean;
   ranges?: {
-    [range: string]: RangePickerPresetRange,
+    [range: string]: RangePickerPresetRange;
   };
   placeholder?: [string, string];
   mode?: string | string[];
-  disabledTime?: (current: moment.Moment, type: string) => {
-    disabledHours?: () => number[],
-    disabledMinutes?: () => number[],
-    disabledSeconds?: () => number[],
+  disabledTime?: (
+    current: moment.Moment,
+    type: string,
+  ) => {
+    disabledHours?: () => number[];
+    disabledMinutes?: () => number[];
+    disabledSeconds?: () => number[];
   };
   onPanelChange?: (value?: RangePickerValue, mode?: string | string[]) => void;
 }

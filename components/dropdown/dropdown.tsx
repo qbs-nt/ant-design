@@ -18,6 +18,8 @@ export interface DropDownProps {
   className?: string;
   transitionName?: string;
   placement?: 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+  overlayClassName?: string;
+  overlayStyle?: React.CSSProperties;
   forceRender?: boolean;
   mouseEnterDelay?: number;
   mouseLeaveDelay?: number;
@@ -55,7 +57,14 @@ export default class Dropdown extends React.Component<DropDownProps, any> {
   }
 
   renderDropDown = ({ getPopupContainer: getContextPopupContainer }: ConfigProviderProps) => {
-    const { children, prefixCls, overlay: overlayElements, trigger, disabled, getPopupContainer } = this.props;
+    const {
+      children,
+      prefixCls,
+      overlay: overlayElements,
+      trigger,
+      disabled,
+      getPopupContainer,
+    } = this.props;
 
     const child = React.Children.only(children);
     const overlay = React.Children.only(overlayElements);
@@ -74,13 +83,15 @@ export default class Dropdown extends React.Component<DropDownProps, any> {
       </span>
     );
 
-    const fixedModeOverlay = typeof overlay.type === 'string'
-      ? overlay : React.cloneElement(overlay, {
-        mode: 'vertical',
-        selectable,
-        focusable,
-        expandIcon,
-      });
+    const fixedModeOverlay =
+      typeof overlay.type === 'string'
+        ? overlay
+        : React.cloneElement(overlay, {
+            mode: 'vertical',
+            selectable,
+            focusable,
+            expandIcon,
+          });
 
     const triggerActions = disabled ? [] : trigger;
     let alignPoint;
@@ -100,13 +111,9 @@ export default class Dropdown extends React.Component<DropDownProps, any> {
         {dropdownTrigger}
       </RcDropdown>
     );
-  }
+  };
 
   render() {
-    return (
-      <ConfigConsumer>
-        {this.renderDropDown}
-      </ConfigConsumer>
-    );
+    return <ConfigConsumer>{this.renderDropDown}</ConfigConsumer>;
   }
 }
