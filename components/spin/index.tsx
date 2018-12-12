@@ -68,7 +68,10 @@ class Spin extends React.Component<SpinProps, SpinState> {
     prefixCls: PropTypes.string,
     className: PropTypes.string,
     spinning: PropTypes.bool,
+    style: PropTypes.object,
     size: PropTypes.oneOf(['small', 'default', 'large']),
+    tip: PropTypes.string,
+    delay: PropTypes.number,
     wrapperClassName: PropTypes.string,
     indicator: PropTypes.node,
   };
