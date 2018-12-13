@@ -70,6 +70,7 @@ export interface RangePickerProps extends PickerProps {
   onCalendarChange?: (dates: RangePickerValue, dateStrings: [string, string]) => void;
   onOk?: (selectedTime: moment.Moment) => void;
   showTime?: TimePickerProps | boolean;
+  showToday?: boolean;
   ranges?: {
     [range: string]: RangePickerPresetRange;
   };
