@@ -26,6 +26,7 @@ import {
   TableComponents,
   RowSelectionType,
   TableLocale,
+  AdditionalCellProps,
   ColumnProps,
   CompareFn,
   TableStateFilters,
@@ -74,7 +75,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
     useFixedHeader: PropTypes.bool,
     rowSelection: PropTypes.object,
     className: PropTypes.string,
-    size: PropTypes.string,
+    size: PropTypes.string as PropTypes.Requireable<TableSize>,
     loading: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     bordered: PropTypes.bool,
     onChange: PropTypes.func,
@@ -488,7 +489,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
     let selectedRowKeys = this.store.getState().selectedRowKeys.concat(defaultSelection);
     const key = this.getRecordKey(record, rowIndex);
     const { pivot } = this.state;
-    const rows = this.getFlatCurrentPageData();
+    const rows = this.getFlatCurrentPageData(this.props.childrenColumnName);
     let realIndex = rowIndex;
     if (this.props.expandedRowRender) {
       realIndex = rows.findIndex(row => this.getRecordKey(row, rowIndex) === key);
@@ -553,10 +554,8 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
   handleRadioSelect = (record: T, rowIndex: number, e: RadioChangeEvent) => {
     const checked = e.target.checked;
     const nativeEvent = e.nativeEvent;
-    const defaultSelection = this.store.getState().selectionDirty ? [] : this.getDefaultSelection();
-    let selectedRowKeys = this.store.getState().selectedRowKeys.concat(defaultSelection);
     const key = this.getRecordKey(record, rowIndex);
-    selectedRowKeys = [key];
+    const selectedRowKeys = [key];
     this.store.setState({
       selectionDirty: true,
     });
@@ -570,7 +569,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
   };
 
   handleSelectRow = (selectionKey: string, index: number, onSelectFunc: SelectionItemSelectFn) => {
-    const data = this.getFlatCurrentPageData();
+    const data = this.getFlatCurrentPageData(this.props.childrenColumnName);
     const defaultSelection = this.store.getState().selectionDirty ? [] : this.getDefaultSelection();
     const selectedRowKeys = this.store.getState().selectedRowKeys.concat(defaultSelection);
     const changeableRowKeys = data
@@ -722,10 +721,10 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
   };
 
   renderRowSelection(locale: TableLocale) {
-    const { prefixCls, rowSelection } = this.props;
+    const { prefixCls, rowSelection, childrenColumnName } = this.props;
     const columns = this.columns.concat();
     if (rowSelection) {
-      const data = this.getFlatCurrentPageData().filter((item, index) => {
+      const data = this.getFlatCurrentPageData(childrenColumnName).filter((item, index) => {
         if (rowSelection.getCheckboxProps) {
           return !this.getCheckboxPropsByItem(item, index).disabled;
         }
@@ -777,7 +776,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
   }
 
   getColumnKey(column: ColumnProps<T>, index?: number) {
-    return column.key || column.dataIndex || index;
+    return column.key || (column.dataIndex as string) || index;
   }
 
   getMaxCurrent(total: number) {
@@ -805,6 +804,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
       const key = this.getColumnKey(column, i) as string;
       let filterDropdown;
       let sortButton;
+      let onHeaderCell = column.onHeaderCell;
       const sortTitle = this.getColumnTitle(column.title, {}) || locale.sortTitle;
       const isSortColumn = this.isSortColumn(column);
       if ((column.filters && column.filters.length > 0) || column.filterDropdown) {
@@ -839,7 +839,27 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
             />
           </div>
         );
+
+        onHeaderCell = (col: Column<T>) => {
+          let colProps: AdditionalCellProps = {};
+          // Get original first
+          if (column.onHeaderCell) {
+            colProps = {
+              ...column.onHeaderCell(col),
+            };
+          }
+          // Add sorter logic
+          const onHeaderCellClick = colProps.onClick;
+          colProps.onClick = (...args) => {
+            this.toggleSortOrder(column);
+            if (onHeaderCellClick) {
+              onHeaderCellClick(...args);
+            }
+          };
+          return colProps;
+        };
       }
+      const sortTitleString = sortButton && typeof sortTitle === 'string' ? sortTitle : undefined;
       return {
         ...column,
         className: classNames(column.className, {
@@ -851,15 +871,15 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
         title: [
           <div
             key="title"
-            title={sortButton ? sortTitle : undefined}
+            title={sortTitleString}
             className={sortButton ? `${prefixCls}-column-sorters` : undefined}
-            onClick={() => this.toggleSortOrder(column)}
           >
             {this.renderColumnTitle(column.title)}
             {sortButton}
           </div>,
           filterDropdown,
         ],
+        onHeaderCell,
       };
     });
   }
@@ -1003,8 +1023,8 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
     return flatArray(this.getLocalData(null, false));
   }
 
-  getFlatCurrentPageData() {
-    return flatArray(this.getCurrentPageData());
+  getFlatCurrentPageData(childrenColumnName: string | undefined) {
+    return flatArray(this.getCurrentPageData(), childrenColumnName);
   }
 
   recursiveSort(data: T[], sorterFn: (a: any, b: any) => number): T[] {
