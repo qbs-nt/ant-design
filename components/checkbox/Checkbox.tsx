@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import RcCheckbox from 'rc-checkbox';
 import shallowEqual from 'shallowequal';
 import CheckboxGroup, { CheckboxGroupContext } from './Group';
+import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 
 export interface AbstractCheckboxProps<T> {
   prefixCls?: string;
@@ -40,10 +41,9 @@ export interface CheckboxChangeEvent {
   nativeEvent: MouseEvent;
 }
 
-export default class Checkbox extends React.Component<CheckboxProps, {}, {}> {
+export default class Checkbox extends React.Component<CheckboxProps, {}> {
   static Group: typeof CheckboxGroup;
   static defaultProps = {
-    prefixCls: 'ant-checkbox',
     indeterminate: false,
   };
 
@@ -79,10 +79,10 @@ export default class Checkbox extends React.Component<CheckboxProps, {}, {}> {
     this.rcCheckbox = node;
   };
 
-  render() {
+  renderCheckbox = ({ getPrefixCls }: ConfigConsumerProps) => {
     const { props, context } = this;
     const {
-      prefixCls,
+      prefixCls: customizePrefixCls,
       className,
       children,
       indeterminate,
@@ -92,6 +92,7 @@ export default class Checkbox extends React.Component<CheckboxProps, {}, {}> {
       ...restProps
     } = props;
     const { checkboxGroup } = context;
+    const prefixCls = getPrefixCls('checkbox', customizePrefixCls);
     const checkboxProps: CheckboxProps = { ...restProps };
     if (checkboxGroup) {
       checkboxProps.onChange = (...args) => {
@@ -127,5 +128,9 @@ export default class Checkbox extends React.Component<CheckboxProps, {}, {}> {
         {children !== undefined && <span>{children}</span>}
       </label>
     );
+  };
+
+  render() {
+    return <ConfigConsumer>{this.renderCheckbox}</ConfigConsumer>;
   }
 }
