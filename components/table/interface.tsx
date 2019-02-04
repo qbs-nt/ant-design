@@ -6,18 +6,13 @@ import { CheckboxChangeEvent } from '../checkbox';
 import { PaginationConfig } from '../pagination';
 export { PaginationConfig } from '../pagination';
 
-export type CompareFn<T> = ((a: T, b: T, sortOrder?: SortOrder) => number);
+export type CompareFn<T> = (a: T, b: T, sortOrder?: SortOrder) => number;
 export type ColumnFilterItem = { text: string; value: string; children?: ColumnFilterItem[] };
 
 export interface ColumnProps<T> {
   title?:
     | React.ReactNode
-    | ((
-        options: {
-          filters: TableStateFilters;
-          sortOrder?: SortOrder;
-        },
-      ) => React.ReactNode);
+    | ((options: { filters: TableStateFilters; sortOrder?: SortOrder }) => React.ReactNode);
   key?: React.Key;
   dataIndex?: string; // Note: We can not use generic type here, since we need to support nested key, see #9393
   render?: (text: any, record: T, index: number) => React.ReactNode;
@@ -36,7 +31,7 @@ export interface ColumnProps<T> {
   fixed?: boolean | ('left' | 'right');
   filterIcon?: React.ReactNode | ((filtered: boolean) => React.ReactNode);
   filteredValue?: any[];
-  sortOrder?: SortOrder;
+  sortOrder?: SortOrder | boolean;
   children?: ColumnProps<T>[];
   onCellClick?: (record: T, event: any) => void;
   onCell?: (record: T, rowIndex: number) => any;
@@ -115,6 +110,11 @@ export interface ExpandIconProps<T> {
   expandable: boolean;
   onExpand: (record: T, event: MouseEvent) => void;
 }
+
+export interface TableCurrentDataSource<T> {
+  currentDataSource: T[];
+}
+
 export interface TableProps<T> {
   prefixCls?: string;
   dropdownPrefixCls?: string;
@@ -145,6 +145,7 @@ export interface TableProps<T> {
     pagination: PaginationConfig,
     filters: Record<keyof T, string[]>,
     sorter: SorterResult<T>,
+    extra: TableCurrentDataSource<T>,
   ) => void;
   loading?: boolean | SpinProps;
   locale?: TableLocale;
