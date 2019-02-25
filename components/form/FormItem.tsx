@@ -66,8 +66,10 @@ export default class FormItem extends React.Component<FormItemProps, any> {
   helpShow = false;
 
   componentDidMount() {
+    const { children, help, validateStatus } = this.props;
     warning(
-      this.getControls(this.props.children, true).length <= 1,
+      this.getControls(children, true).length <= 1 ||
+        (help !== undefined || validateStatus !== undefined),
       '`Form.Item` cannot generate `validateStatus` and `help` automatically, ' +
         'while there are more than one `getFieldDecorator` in it.',
     );
@@ -302,16 +304,18 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     if (!id) {
       return;
     }
-    const controls = document.querySelectorAll(`[id="${id}"]`);
-    if (controls.length !== 1) {
+
+    const formItemNode = ReactDOM.findDOMNode(this) as Element;
+    const control = formItemNode.querySelector(`[id="${id}"]`) as HTMLElement;
+
+    if (control) {
       // Only prevent in default situation
       // Avoid preventing event in `label={<a href="xx">link</a>}``
       if (typeof label === 'string') {
         e.preventDefault();
       }
-      const formItemNode = ReactDOM.findDOMNode(this) as Element;
-      const control = formItemNode.querySelector(`[id="${id}"]`) as HTMLElement;
-      if (control && control.focus) {
+
+      if (control.focus) {
         control.focus();
       }
     }
