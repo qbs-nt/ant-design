@@ -29,6 +29,7 @@ export interface SinglePickerProps {
   value?: moment.Moment;
   defaultValue?: moment.Moment;
   defaultPickerValue?: moment.Moment;
+  placeholder?: string;
   renderExtraFooter?: (mode: 'date' | 'month' | 'year' | 'decade') => React.ReactNode;
   onChange?: (date: moment.Moment, dateString: string) => void;
 }
@@ -51,13 +52,11 @@ export interface DatePickerProps extends PickerProps, SinglePickerProps {
   onOpenChange?: (status: boolean) => void;
   onPanelChange?: (value: moment.Moment | undefined, mode: DatePickerMode) => void;
   onOk?: (selectedTime: moment.Moment) => void;
-  placeholder?: string;
   mode?: DatePickerMode;
 }
 
 export interface MonthPickerProps extends PickerProps, SinglePickerProps {
   className?: string;
-  placeholder?: string;
 }
 
 export type RangePickerValue =
@@ -95,7 +94,6 @@ export interface RangePickerProps extends PickerProps {
 
 export interface WeekPickerProps extends PickerProps, SinglePickerProps {
   className?: string;
-  placeholder?: string;
 }
 
 export interface DatePickerDecorator extends React.ClassicComponentClass<DatePickerProps> {
