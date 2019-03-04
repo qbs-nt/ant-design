@@ -276,6 +276,7 @@ class RangePicker extends React.Component<any, RangePickerState> {
       localeCode,
       format,
       dateRender,
+      dateCellContentRender,
       onCalendarChange,
       suffixIcon,
     } = props;
@@ -334,6 +335,7 @@ class RangePicker extends React.Component<any, RangePickerState> {
         locale={locale.lang}
         onOk={onOk}
         dateRender={dateRender}
+        dateCellContentRender={dateCellContentRender}
         value={showDate}
         onValueChange={this.handleShowDateChange}
         hoverValue={hoverValue}
