@@ -221,7 +221,7 @@ class RangePicker extends React.Component<any, RangePickerState> {
     this.picker = node;
   };
 
-  renderFooter = (...args: any[]) => {
+  renderFooter = () => {
     const { ranges, renderExtraFooter } = this.props;
     const { prefixCls, tagPrefixCls } = this;
     if (!ranges && !renderExtraFooter) {
@@ -229,7 +229,11 @@ class RangePicker extends React.Component<any, RangePickerState> {
     }
     const customFooter = renderExtraFooter ? (
       <div className={`${prefixCls}-footer-extra`} key="extra">
-        {renderExtraFooter(...args)}
+        {renderExtraFooter({
+          value: this.state.value,
+          hoverValue: this.state.hoverValue,
+          showDate: this.state.showDate,
+        })}
       </div>
     ) : null;
     const operations = Object.keys(ranges || {}).map(range => {
