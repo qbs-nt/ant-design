@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { polyfill } from 'react-lifecycles-compat';
 import Calendar from 'rc-calendar';
 import RcDatePicker from 'rc-calendar/lib/Picker';
+import { defaultContentRender } from 'rc-calendar/lib/date/DateTBody';
 import classNames from 'classnames';
 import Icon from '../icon';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
@@ -64,8 +65,12 @@ class WeekPicker extends React.Component<any, WeekPickerState> {
   weekDateRender = (current: any) => {
     const selectedValue = this.state.value;
     const { prefixCls } = this;
-    const { dateRender } = this.props;
-    const dateNode = dateRender ? dateRender(current) : current.date();
+    const { dateRender, dateCellContentRender } = this.props;
+    const dateNode = dateRender
+      ? dateRender(current)
+      : dateCellContentRender
+      ? dateCellContentRender(current)
+      : defaultContentRender(current);
     if (
       selectedValue &&
       current.year() === selectedValue.year() &&

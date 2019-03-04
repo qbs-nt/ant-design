@@ -3,6 +3,20 @@ import * as moment from 'moment';
 import { TimePickerProps } from '../time-picker';
 import { tuple } from '../_util/type';
 
+export type CellContentRenderer = (current: moment.Moment, value: moment.Moment) => React.ReactNode;
+
+export type DateRenderer = (
+  current: moment.Moment,
+  value: moment.Moment,
+  cellProps: {
+    key: string;
+    className: string;
+    selected: boolean;
+    disabled: boolean;
+    contentRender?: CellContentRenderer;
+  },
+) => React.ReactNode;
+
 export interface PickerProps {
   id?: number | string;
   name?: string;
@@ -23,7 +37,8 @@ export interface PickerProps {
   onOpenChange?: (status: boolean) => void;
   disabledDate?: (current: moment.Moment | undefined) => boolean;
   renderExtraFooter?: () => React.ReactNode;
-  dateRender?: (current: moment.Moment, today: moment.Moment) => React.ReactNode;
+  dateRender?: DateRenderer;
+  dateCellContentRender?: CellContentRenderer;
   autoFocus?: boolean;
 }
 
