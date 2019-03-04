@@ -53,6 +53,7 @@ export interface TimePickerProps {
   popupClassName?: string;
   popupStyle?: React.CSSProperties;
   suffixIcon?: React.ReactNode;
+  clearIcon?: React.ReactNode;
 }
 
 export interface TimePickerLocale {
@@ -98,7 +99,8 @@ class TimePicker extends React.Component<TimePickerProps, any> {
 
     warning(
       !('allowEmpty' in props),
-      '`allowEmpty` in TimePicker is deprecated. Please use `allowClear` instead.',
+      'TimePicker',
+      '`allowEmpty` is deprecated. Please use `allowClear` instead.',
     );
   }
 
@@ -164,11 +166,17 @@ class TimePicker extends React.Component<TimePickerProps, any> {
   }
 
   renderClearIcon(prefixCls: string) {
-    const {} = this.props;
+    const { clearIcon } = this.props;
 
-    const clearIcon = <Icon type="close-circle" className={`${prefixCls}-clear`} theme="filled" />;
+    const clearIconPrefixCls = `${prefixCls}-clear`;
 
-    return clearIcon;
+    if (clearIcon && React.isValidElement<{ className?: string }>(clearIcon)) {
+      return React.cloneElement(clearIcon, {
+        className: classNames(clearIcon.props.className, clearIconPrefixCls),
+      });
+    }
+
+    return <Icon type="close-circle" className={clearIconPrefixCls} theme="filled" />;
   }
 
   renderTimePicker = (locale: TimePickerLocale) => (
