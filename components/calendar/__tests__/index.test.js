@@ -134,9 +134,9 @@ describe('Calendar', () => {
     const onPanelChangeStub = jest.fn();
     const wrapper = mount(<Calendar mode={yearMode} onPanelChange={onPanelChangeStub} />);
     expect(wrapper.state().mode).toEqual(yearMode);
-    wrapper.instance().setType('date');
+    wrapper.setProps({ mode: monthMode });
     expect(wrapper.state().mode).toEqual(monthMode);
-    expect(onPanelChangeStub).toHaveBeenCalledTimes(1);
+    expect(onPanelChangeStub).toHaveBeenCalledTimes(0);
   });
 
   it('Calendar should support locale', () => {
@@ -160,5 +160,19 @@ describe('Calendar', () => {
 
     expect(onPanelChange).toBeCalled();
     expect(onPanelChange.mock.calls[0][0].month()).toEqual(date.month() - 1);
+  });
+
+  it('switch should work correctly without prop mode', async () => {
+    const onPanelChange = jest.fn();
+    const date = new Moment(new Date(Date.UTC(2017, 7, 9, 8)));
+    const wrapper = mount(<Calendar onPanelChange={onPanelChange} value={date} />);
+    expect(wrapper.state().mode).toBe('month');
+    expect(wrapper.find('.ant-fullcalendar-table').length).toBe(1);
+    expect(wrapper.find('.ant-fullcalendar-month-panel-table').length).toBe(0);
+    wrapper.find('.ant-radio-button-input[value="year"]').simulate('change');
+    expect(wrapper.find('.ant-fullcalendar-table').length).toBe(0);
+    expect(wrapper.find('.ant-fullcalendar-month-panel-table').length).toBe(1);
+    expect(onPanelChange).toBeCalled();
+    expect(onPanelChange.mock.calls[0][1]).toEqual('year');
   });
 });

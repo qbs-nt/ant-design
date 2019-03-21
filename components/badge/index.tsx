@@ -20,7 +20,7 @@ export interface BadgeProps {
   scrollNumberPrefixCls?: string;
   className?: string;
   status?: 'success' | 'processing' | 'default' | 'error' | 'warning';
-  text?: string;
+  text?: React.ReactNode;
   offset?: [number | string, number | string];
   title?: string;
 }
@@ -183,14 +183,14 @@ export default class Badge extends React.Component<BadgeProps, any> {
 
     // <Badge status="success" />
     if (!children && status) {
+      const styleWithOffset = this.getStyleWithOffset();
+      const statusTextColor = styleWithOffset && styleWithOffset.color;
       return (
-        <span
-          {...restProps}
-          className={this.getBadgeClassName(prefixCls)}
-          style={this.getStyleWithOffset()}
-        >
+        <span {...restProps} className={this.getBadgeClassName(prefixCls)} style={styleWithOffset}>
           <span className={statusCls} />
-          <span className={`${prefixCls}-status-text`}>{text}</span>
+          <span style={{ color: statusTextColor }} className={`${prefixCls}-status-text`}>
+            {text}
+          </span>
         </span>
       );
     }

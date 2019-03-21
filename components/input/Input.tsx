@@ -20,7 +20,7 @@ function fixControlledValue<T>(value: T) {
 }
 
 function hasPrefixSuffix(props: InputProps) {
-  return 'prefix' in props || props.suffix || props.allowClear;
+  return !!('prefix' in props || props.suffix || props.allowClear);
 }
 
 const InputSizes = tuple('small', 'default', 'large');
@@ -139,9 +139,13 @@ class Input extends React.Component<InputProps, any> {
     this.input = node;
   };
 
-  setValue(value: string, e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) {
+  setValue(
+    value: string,
+    e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement, MouseEvent>,
+    callback?: () => void,
+  ) {
     if (!('value' in this.props)) {
-      this.setState({ value });
+      this.setState({ value }, callback);
     }
     const { onChange } = this.props;
     if (onChange) {
@@ -163,8 +167,10 @@ class Input extends React.Component<InputProps, any> {
     }
   }
 
-  handleReset = (e: React.MouseEvent<HTMLElement>) => {
-    this.setValue('', e);
+  handleReset = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    this.setValue('', e, () => {
+      this.focus();
+    });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
