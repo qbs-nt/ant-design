@@ -17,6 +17,7 @@
     &:active,
     &.active {
       .button-color(@btn-disable-color; @btn-disable-bg; @btn-disable-border);
+
       text-shadow: none;
       box-shadow: none;
     }
@@ -25,6 +26,7 @@
 
 .button-variant-primary(@color; @background) {
   .button-color(@color; @background; @background);
+
   text-shadow: @btn-text-shadow;
   box-shadow: @btn-primary-shadow;
 
@@ -156,7 +158,7 @@
   white-space: nowrap;
   text-align: center;
   background-image: none;
-  border: @border-width-base @border-style-base transparent;
+  border: @btn-border-width @btn-border-style transparent;
   box-shadow: @btn-shadow;
   cursor: pointer;
   transition: all 0.3s @ease-in-out;

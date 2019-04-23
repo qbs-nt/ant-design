@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import omit from 'omit.js';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 import { throttleByAnimationFrameDecorator } from '../_util/throttleByAnimationFrame';
+import ResizeObserver from '../_util/resizeObserver';
 
 import warning from '../_util/warning';
 import { addObserveTarget, removeObserveTarget, getTargetRect } from './utils';
@@ -40,6 +41,8 @@ export interface AffixState {
   placeholderStyle?: React.CSSProperties;
   status: AffixStatus;
   lastAffix: boolean;
+
+  prevTarget: Window | HTMLElement | null;
 }
 
 class Affix extends React.Component<AffixProps, AffixState> {
@@ -50,6 +53,7 @@ class Affix extends React.Component<AffixProps, AffixState> {
   state: AffixState = {
     status: AffixStatus.None,
     lastAffix: false,
+    prevTarget: null,
   };
 
   placeholderNode: HTMLDivElement;
@@ -71,14 +75,22 @@ class Affix extends React.Component<AffixProps, AffixState> {
   }
 
   componentDidUpdate(prevProps: AffixProps) {
+    const { prevTarget } = this.state;
     const { target } = this.props;
-    if (prevProps.target !== target) {
+    let newTarget = null;
+    if (target) {
+      newTarget = target() || null;
+    }
+
+    if (prevTarget !== newTarget) {
       removeObserveTarget(this);
-      if (target) {
-        addObserveTarget(target(), this);
+      if (newTarget) {
+        addObserveTarget(newTarget, this);
         // Mock Event object.
         this.updatePosition({} as Event);
       }
+
+      this.setState({ prevTarget: newTarget });
     }
 
     if (
@@ -109,13 +121,21 @@ class Affix extends React.Component<AffixProps, AffixState> {
   // Handle realign logic
   @throttleByAnimationFrameDecorator()
   // @ts-ignore TS6133
-  updatePosition(e: Event) {
+  updatePosition(e?: Event) {
     // event param is used before. Keep compatible ts define here.
     this.setState({
       status: AffixStatus.Prepare,
       affixStyle: undefined,
       placeholderStyle: undefined,
     });
+
+    // Test if `updatePosition` called
+    if (process.env.NODE_ENV === 'test') {
+      const { onTestUpdatePosition } = this.props as any;
+      if (onTestUpdatePosition) {
+        onTestUpdatePosition();
+      }
+    }
   }
 
   measure = () => {
@@ -194,13 +214,11 @@ class Affix extends React.Component<AffixProps, AffixState> {
       [getPrefixCls('affix', prefixCls)]: affixStyle,
     });
 
-    const props = omit(this.props, [
-      'prefixCls',
-      'offsetTop',
-      'offsetBottom',
-      'target',
-      'onChange',
-    ]);
+    let props = omit(this.props, ['prefixCls', 'offsetTop', 'offsetBottom', 'target', 'onChange']);
+    // Omit this since `onTestUpdatePosition` only works on test.
+    if (process.env.NODE_ENV === 'test') {
+      props = omit(props, ['onTestUpdatePosition']);
+    }
     const mergedPlaceholderStyle = {
       ...(status === AffixStatus.None ? placeholderStyle : null),
       ...style,
@@ -208,7 +226,7 @@ class Affix extends React.Component<AffixProps, AffixState> {
     return (
       <div {...props} style={mergedPlaceholderStyle} ref={this.savePlaceholderNode}>
         <div className={className} ref={this.saveFixedNode} style={this.state.affixStyle}>
-          {children}
+          <ResizeObserver onResize={this.updatePosition}>{children}</ResizeObserver>
         </div>
       </div>
     );
