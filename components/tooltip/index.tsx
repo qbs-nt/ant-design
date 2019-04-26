@@ -41,6 +41,7 @@ export interface AbstractTooltipProps {
   prefixCls?: string;
   overlayClassName?: string;
   style?: React.CSSProperties;
+  className?: string;
   overlayStyle?: React.CSSProperties;
   placement?: TooltipPlacement;
   builtinPlacements?: Object;
