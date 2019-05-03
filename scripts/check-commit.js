@@ -36,7 +36,7 @@ async function checkCommit({ files }) {
     files.forEach(({ path: filePath, working_dir: mark }) => {
       console.log(' -', chalk.red(mark), filePath);
     });
-    // exitProcess();
+    exitProcess();
   }
 }
 
