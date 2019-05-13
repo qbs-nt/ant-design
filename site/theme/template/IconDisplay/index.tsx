@@ -122,4 +122,3 @@ class IconDisplay extends React.Component<IconDisplayProps, IconDisplayState> {
 }
 
 export default injectIntl(IconDisplay);
-
