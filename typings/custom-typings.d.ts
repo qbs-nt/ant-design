@@ -43,8 +43,6 @@ declare module 'rc-tree/lib/util';
 
 declare module 'rc-tooltip*';
 
-declare module 'rc-calendar';
-
 declare module 'rc-input-number';
 
 declare module 'rc-pagination';

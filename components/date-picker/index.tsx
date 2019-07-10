@@ -7,12 +7,7 @@ import RangePicker from './RangePicker';
 import WeekPicker from './WeekPicker';
 import { DatePickerProps, DatePickerDecorator } from './interface';
 
-export {
-  CellContentRenderer,
-  DateRenderer,
-  defaultContentRender,
-  defaultDateRender,
-} from 'rc-calendar';
+export { defaultContentRender, defaultDateRender } from 'rc-calendar';
 
 const DatePicker = wrapPicker(createPicker(RcCalendar), 'date') as React.ClassicComponentClass<
   DatePickerProps
