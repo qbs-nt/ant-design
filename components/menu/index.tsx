@@ -1,6 +1,6 @@
 import * as React from 'react';
 import RcMenu, { Divider, ItemGroup } from 'rc-menu';
-import createContext, { Context } from '@ant-design/create-react-context';
+import createContext from '@ant-design/create-react-context';
 import classNames from 'classnames';
 import omit from 'omit.js';
 import SubMenu from './SubMenu';
@@ -16,7 +16,7 @@ export interface SelectParam {
   key: string;
   keyPath: Array<string>;
   item: any;
-  domEvent: any;
+  domEvent: Event;
   selectedKeys: Array<string>;
 }
 
@@ -24,7 +24,7 @@ export interface ClickParam {
   key: string;
   keyPath: Array<string>;
   item: any;
-  domEvent: any;
+  domEvent: Event;
 }
 
 export type MenuMode = 'vertical' | 'vertical-left' | 'vertical-right' | 'horizontal' | 'inline';
@@ -79,7 +79,7 @@ export interface MenuContextProps {
   antdMenuTheme?: MenuTheme;
 }
 
-export const MenuContext: Context<MenuContextProps> = createContext({
+export const MenuContext = createContext<MenuContextProps>({
   inlineCollapsed: false,
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, mount } from 'enzyme';
-import Icon from '..';
 import ReactIcon from '@ant-design/icons-react';
+import Icon from '..';
 import Tooltip from '../../tooltip';
 import { getThemeFromTypeName, withThemeSuffix } from '../utils';
 
@@ -241,7 +241,11 @@ describe('utils', () => {
     expect(errorSpy).toHaveBeenLastCalledWith(
       "Warning: [antd: Icon] Icon 'canlendar' is typo and depracated, please use 'calendar' instead.",
     );
-    expect(errorSpy).toHaveBeenCalledTimes(3);
+    render(<Icon type="colum-height" />);
+    expect(errorSpy).toHaveBeenLastCalledWith(
+      "Warning: [antd: Icon] Icon 'colum-height' is typo and depracated, please use 'column-height' instead.",
+    );
+    expect(errorSpy).toHaveBeenCalledTimes(4);
     errorSpy.mockRestore();
   });
 });

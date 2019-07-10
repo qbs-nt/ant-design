@@ -11,9 +11,10 @@
   position: relative;
   display: inline-block;
   height: auto;
-  white-space: pre-wrap;
+  line-height: unset;
   padding: 0;
   overflow: hidden;
+  white-space: pre-wrap;
   vertical-align: bottom;
 
   // =================== Status ===================
@@ -58,6 +59,7 @@
     border: none;
     outline: none;
     resize: none;
+    .placeholder();
 
     &:read-only {
       cursor: default;
@@ -107,6 +109,7 @@
       &-item {
         position: relative;
         display: block;
+        min-width: 100px;
         padding: 5px @control-padding-horizontal;
         overflow: hidden;
         color: @text-color;
@@ -115,7 +118,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         cursor: pointer;
-        min-width: 100px;
         transition: background 0.3s ease;
 
         &:hover {
