@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import raf from 'raf';
 import Affix from '../affix';
 import AnchorLink from './AnchorLink';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 import getScroll from '../_util/getScroll';
-import raf from 'raf';
 
 function getDefaultContainer() {
   return window;
@@ -146,8 +146,13 @@ export default class Anchor extends React.Component<AnchorProps, AnchorState> {
 
   private inkNode: HTMLSpanElement;
 
+  // scroll scope's container
+  private scrollContainer: HTMLElement | Window;
+
   private links: string[] = [];
+
   private scrollEvent: any;
+
   private animating: boolean;
 
   private prefixCls?: string;
@@ -174,8 +179,23 @@ export default class Anchor extends React.Component<AnchorProps, AnchorState> {
 
   componentDidMount() {
     const { getContainer } = this.props as AnchorDefaultProps;
-    this.scrollEvent = addEventListener(getContainer(), 'scroll', this.handleScroll);
+    this.scrollContainer = getContainer();
+    this.scrollEvent = addEventListener(this.scrollContainer, 'scroll', this.handleScroll);
     this.handleScroll();
+  }
+
+  componentDidUpdate() {
+    if (this.scrollEvent) {
+      const { getContainer } = this.props as AnchorDefaultProps;
+      const currentContainer = getContainer();
+      if (this.scrollContainer !== currentContainer) {
+        this.scrollContainer = currentContainer;
+        this.scrollEvent.remove();
+        this.scrollEvent = addEventListener(this.scrollContainer, 'scroll', this.handleScroll);
+        this.handleScroll();
+      }
+    }
+    this.updateInk();
   }
 
   componentWillUnmount() {
@@ -183,29 +203,6 @@ export default class Anchor extends React.Component<AnchorProps, AnchorState> {
       this.scrollEvent.remove();
     }
   }
-
-  componentDidUpdate() {
-    this.updateInk();
-  }
-
-  handleScroll = () => {
-    if (this.animating) {
-      return;
-    }
-    const { offsetTop, bounds } = this.props;
-    this.setState({
-      activeLink: this.getCurrentAnchor(offsetTop, bounds),
-    });
-  };
-
-  handleScrollTo = (link: string) => {
-    const { offsetTop, getContainer } = this.props as AnchorDefaultProps;
-    this.animating = true;
-    this.setState({ activeLink: link });
-    scrollTo(link, offsetTop, getContainer, () => {
-      this.animating = false;
-    });
-  };
 
   getCurrentAnchor(offsetTop = 0, bounds = 5): string {
     const activeLink = '';
@@ -240,20 +237,43 @@ export default class Anchor extends React.Component<AnchorProps, AnchorState> {
     return '';
   }
 
+  saveInkNode = (node: HTMLSpanElement) => {
+    this.inkNode = node;
+  };
+
+  handleScroll = () => {
+    if (this.animating) {
+      return;
+    }
+    const { activeLink } = this.state;
+    const { offsetTop, bounds } = this.props;
+    const currentActiveLink = this.getCurrentAnchor(offsetTop, bounds);
+    if (activeLink !== currentActiveLink) {
+      this.setState({
+        activeLink: currentActiveLink,
+      });
+    }
+  };
+
+  handleScrollTo = (link: string) => {
+    const { offsetTop, getContainer } = this.props as AnchorDefaultProps;
+    this.animating = true;
+    this.setState({ activeLink: link });
+    scrollTo(link, offsetTop, getContainer, () => {
+      this.animating = false;
+    });
+  };
+
   updateInk = () => {
     if (typeof document === 'undefined') {
       return;
     }
-    const prefixCls = this.prefixCls;
+    const { prefixCls } = this;
     const anchorNode = ReactDOM.findDOMNode(this) as Element;
     const linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0];
     if (linkNode) {
       this.inkNode.style.top = `${(linkNode as any).offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
     }
-  };
-
-  saveInkNode = (node: HTMLSpanElement) => {
-    this.inkNode = node;
   };
 
   renderAnchor = ({ getPrefixCls }: ConfigConsumerProps) => {

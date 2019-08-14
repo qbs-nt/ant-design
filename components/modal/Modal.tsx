@@ -31,34 +31,34 @@ if (typeof window !== 'undefined' && window.document && window.document.document
 }
 
 export interface ModalProps {
-  /** 对话框是否可见*/
+  /** 对话框是否可见 */
   visible?: boolean;
-  /** 确定按钮 loading*/
+  /** 确定按钮 loading */
   confirmLoading?: boolean;
-  /** 标题*/
+  /** 标题 */
   title?: React.ReactNode | string;
-  /** 是否显示右上角的关闭按钮*/
+  /** 是否显示右上角的关闭按钮 */
   closable?: boolean;
-  /** 点击确定回调*/
+  /** 点击确定回调 */
   onOk?: (e: React.MouseEvent<HTMLElement>) => void;
-  /** 点击模态框右上角叉、取消按钮、Props.maskClosable 值为 true 时的遮罩层或键盘按下 Esc 时的回调*/
+  /** 点击模态框右上角叉、取消按钮、Props.maskClosable 值为 true 时的遮罩层或键盘按下 Esc 时的回调 */
   onCancel?: (e: React.MouseEvent<HTMLElement>) => void;
   afterClose?: () => void;
   /** 垂直居中 */
   centered?: boolean;
-  /** 宽度*/
+  /** 宽度 */
   width?: string | number;
-  /** 底部内容*/
+  /** 底部内容 */
   footer?: React.ReactNode;
-  /** 确认按钮文字*/
+  /** 确认按钮文字 */
   okText?: React.ReactNode;
-  /** 确认按钮类型*/
+  /** 确认按钮类型 */
   okType?: ButtonType;
-  /** 取消按钮文字*/
+  /** 取消按钮文字 */
   cancelText?: React.ReactNode;
-  /** 点击蒙层是否允许关闭*/
+  /** 点击蒙层是否允许关闭 */
   maskClosable?: boolean;
-  /** 强制渲染 Modal*/
+  /** 强制渲染 Modal */
   forceRender?: boolean;
   okButtonProps?: NativeButtonProps;
   cancelButtonProps?: NativeButtonProps;
@@ -68,7 +68,7 @@ export interface ModalProps {
   maskTransitionName?: string;
   transitionName?: string;
   className?: string;
-  getContainer?: (instance: React.ReactInstance) => HTMLElement;
+  getContainer?: string | HTMLElement | getContainerFunc | false | null;
   zIndex?: number;
   bodyStyle?: React.CSSProperties;
   maskStyle?: React.CSSProperties;
@@ -77,6 +77,8 @@ export interface ModalProps {
   wrapProps?: any;
   prefixCls?: string;
 }
+
+type getContainerFunc = () => HTMLElement;
 
 export interface ModalFuncProps {
   prefixCls?: string;
@@ -106,7 +108,7 @@ export interface ModalFuncProps {
   maskStyle?: React.CSSProperties;
   type?: string;
   keyboard?: boolean;
-  getContainer?: (instance: React.ReactInstance) => HTMLElement;
+  getContainer?: string | HTMLElement | getContainerFunc | false | null;
   autoFocusButton?: null | 'ok' | 'cancel';
   transitionName?: string;
   maskTransitionName?: string;
@@ -127,11 +129,17 @@ export interface ModalLocale {
 
 export default class Modal extends React.Component<ModalProps, {}> {
   static info: ModalFunc;
+
   static success: ModalFunc;
+
   static error: ModalFunc;
+
   static warn: ModalFunc;
+
   static warning: ModalFunc;
+
   static confirm: ModalFunc;
+
   static destroyAll: () => void;
 
   static defaultProps = {
@@ -159,14 +167,14 @@ export default class Modal extends React.Component<ModalProps, {}> {
   };
 
   handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const onCancel = this.props.onCancel;
+    const { onCancel } = this.props;
     if (onCancel) {
       onCancel(e);
     }
   };
 
   handleOk = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const onOk = this.props.onOk;
+    const { onOk } = this.props;
     if (onOk) {
       onOk(e);
     }
@@ -221,7 +229,7 @@ export default class Modal extends React.Component<ModalProps, {}> {
     return (
       <Dialog
         {...restProps}
-        getContainer={getContainer || getContextPopupContainer}
+        getContainer={getContainer === undefined ? getContextPopupContainer : getContainer}
         prefixCls={prefixCls}
         wrapClassName={classNames({ [`${prefixCls}-centered`]: !!centered }, wrapClassName)}
         footer={footer === undefined ? defaultFooter : footer}

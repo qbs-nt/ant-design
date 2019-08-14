@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { Item } from 'rc-menu';
 import { ClickParam } from '.';
-import { MenuContext, MenuContextProps } from './';
+import MenuContext, { MenuContextProps } from './MenuContext';
 import Tooltip, { TooltipProps } from '../tooltip';
 import { SiderContext, SiderContextProps } from '../layout/Sider';
 
-export interface MenuItemProps {
+export interface MenuItemProps
+  extends Omit<
+    React.HTMLAttributes<HTMLLIElement>,
+    'title' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'
+  > {
   rootPrefixCls?: string;
   disabled?: boolean;
   level?: number;
@@ -20,6 +24,7 @@ export interface MenuItemProps {
 
 export default class MenuItem extends React.Component<MenuItemProps> {
   static isMenuItem = true;
+
   private menuItem: this;
 
   onKeyDown = (e: React.MouseEvent<HTMLElement>) => {
