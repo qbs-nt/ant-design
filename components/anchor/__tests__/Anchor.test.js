@@ -273,16 +273,19 @@ describe('Anchor Render', () => {
     expect(wrapper.instance().state.activeLink).toBe('#API2');
   });
 
-  it('Anchor targetOffset prop', async () => {
+  it('Anchor targetOffset prop', () => {
     jest.useFakeTimers();
 
     let dateNowMock;
 
     function dataNowMockFn() {
-      return jest
-        .spyOn(Date, 'now')
-        .mockImplementationOnce(() => 0)
-        .mockImplementationOnce(() => 1000);
+      let start = 0;
+
+      const handler = () => {
+        return (start += 1000);
+      };
+
+      return jest.spyOn(Date, 'now').mockImplementation(handler);
     }
 
     dateNowMock = dataNowMockFn();

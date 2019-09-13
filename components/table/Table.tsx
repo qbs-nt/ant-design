@@ -1,6 +1,7 @@
 /* eslint-disable prefer-spread */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import omit from 'omit.js';
 import RcTable, { INTERNAL_COL_DEFINE } from 'rc-table';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -404,9 +405,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
     // 当数据量少于等于每页数量时，直接设置数据
     // 否则进行读取分页数据
     if (data.length > pageSize || pageSize === Number.MAX_VALUE) {
-      data = data.filter((_, i) => {
-        return i >= (current - 1) * pageSize && i < current * pageSize;
-      });
+      data = data.slice((current - 1) * pageSize, current * pageSize);
     }
     return data;
   }
@@ -1214,7 +1213,9 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
     contextLocale: TableLocale;
     getPopupContainer: TableProps<T>['getPopupContainer'];
   }) => {
-    const { showHeader, locale, getPopupContainer, ...restProps } = this.props;
+    const { showHeader, locale, getPopupContainer, ...restTableProps } = this.props;
+    // do not pass prop.style to rc-table, since already apply it to container div
+    const restProps = omit(restTableProps, ['style']);
     const data = this.getCurrentPageData();
     const expandIconAsCell = this.props.expandedRowRender && this.props.expandIconAsCell !== false;
 
