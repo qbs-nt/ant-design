@@ -15,6 +15,34 @@ timeline: true
 
 ---
 
+## 3.23.5
+
+`2019-09-29`
+
+- 🐞 修复 Upload 预览图片无法填充满图片框的问题。[#18990](https://github.com/ant-design/ant-design/pull/18990)
+- 🐞 修复 Breadcrumb 不支持 `data-*` 和 `aria-*` 的问题。[#18941](https://github.com/ant-design/ant-design/pull/18941) [@sosohime](https://github.com/sosohime)
+- 🐞 修复 TreeSelect `removeIcon` 和 `clearIcon` 不工作的问题。[#18949](https://github.com/ant-design/ant-design/issues/18949) [@sosohime](https://github.com/sosohime)
+- 🐞 修复 Tree 组件当 `showLine` 设置后 `switcherIcon` 没有正常工作的问题。[#18829](https://github.com/ant-design/ant-design/pull/18829) [@MrHeer](https://github.com/MrHeer)
+- 🐞 修复按钮图标在 Button.Group 中的错位问题。[#18994](https://github.com/ant-design/ant-design/pull/18994)
+- 🐞 移除 Select 中无效属性 `searchValue` 的定义及文档。[#19003](https://github.com/ant-design/ant-design/pull/19003)
+- 🐞 修复 Avatar 文本头像在 ssr 时会闪烁的问题。[#19029](https://github.com/ant-design/ant-design/pull/19029)
+- TypeScript
+  - 🐞 修复 Grid 组件的类型定义。[#18946](https://github.com/ant-design/ant-design/pull/18946) [@handycode](https://github.com/handycode)
+
+## 3.23.4
+
+`2019-09-21`
+
+- 🐞 修复 Transfer `disabled` 下勾选框不被禁用的问题。[#18849](https://github.com/ant-design/ant-design/pull/18849)
+- 🐞 回滚 Dragger 到 class component 以修复 ref 警告信息。[#18707](https://github.com/ant-design/ant-design/issues/18707)
+- 🐞 修复 Input `addonAfter` 里图标高度在 Chrome 下偏大的问题。[#18858](https://github.com/ant-design/ant-design/pull/18858)
+- 🐞 修复 Menu 在 `collapsedWidth={0}` 时，折叠后丢失 `selectedKeys` 状态的问题。[#18907](https://github.com/ant-design/ant-design/pull/18907)
+- 🐞 修复 Input 在禁用状态时，后缀图标可点击的问题。[#18900](https://github.com/ant-design/ant-design/pull/18900)
+- 🐞 修复 Alert 标题和内容过长不换行的问题。[#18929](https://github.com/ant-design/ant-design/pull/18929)
+- 💄 增加 `@page-header-back-color` less 变量。[#18887](https://github.com/ant-design/ant-design/pull/18887)
+- TypeScript
+  - 🐞 修复 Table 事件的类型定义。[#18910](https://github.com/ant-design/ant-design/pull/18910)
+
 ## 3.23.3
 
 `2019-09-16`

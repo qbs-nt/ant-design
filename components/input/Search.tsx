@@ -39,6 +39,11 @@ export default class Search extends React.Component<SearchProps, any> {
   };
 
   onSearch = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLInputElement>) => {
+    const { disabled } = this.props;
+    if (disabled) {
+      return;
+    }
+
     const { onSearch } = this.props;
     if (onSearch) {
       onSearch(this.input.input.value, e);
@@ -87,11 +92,14 @@ export default class Search extends React.Component<SearchProps, any> {
 
     let button: React.ReactNode;
     const enterButtonAsElement = enterButton as React.ReactElement<any>;
-    if (enterButtonAsElement.type === Button || enterButtonAsElement.type === 'button') {
+    const isAntdButton =
+      enterButtonAsElement.type &&
+      (enterButtonAsElement.type as typeof Button).__ANT_BUTTON === true;
+    if (isAntdButton || enterButtonAsElement.type === 'button') {
       button = React.cloneElement(enterButtonAsElement, {
         onClick: this.onSearch,
         key: 'enterButton',
-        ...(enterButtonAsElement.type === Button
+        ...(isAntdButton
           ? {
               className: btnClassName,
               size,

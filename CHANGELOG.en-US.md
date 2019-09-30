@@ -15,6 +15,34 @@ timeline: true
 
 ---
 
+## 3.23.5
+
+`2019-09-29`
+
+- 🐞 Fix Upload preview image cannot fill the picture card box. [#18990](https://github.com/ant-design/ant-design/pull/18990)
+- 🐞 Fix Breadcrumb not support `data-*` and `aria-*` attributes. [#18941](https://github.com/ant-design/ant-design/pull/18941) [@sosohime](https://github.com/sosohime)
+- 🐞 Fix TreeSelect `removeIcon` and `clearIcon` not working. [#18949](https://github.com/ant-design/ant-design/issues/18949) [@sosohime](https://github.com/sosohime)
+- 🐞 Fix Tree `switcherIcon` prop not working when `showLine` is true. [#18829](https://github.com/ant-design/ant-design/pull/18829) [@MrHeer](https://github.com/MrHeer)
+- 🐞 Fix style bug of Button with icon only when in Button.Group. [#18994](https://github.com/ant-design/ant-design/pull/18994)
+- 🐞 Remove Select useless prop `searchValue` which is a total misunderstanding. [#19003](https://github.com/ant-design/ant-design/pull/19003)
+- 🐞 Fix Avatar string blink when ssr render at first time. [#19029](https://github.com/ant-design/ant-design/pull/19029)
+- TypeScript
+  - 🐞 Fix Grid type definition. [#18946](https://github.com/ant-design/ant-design/pull/18946) [@handycode](https://github.com/handycode)
+
+## 3.23.4
+
+`2019-09-21`
+
+- 🐞 Fix item not disabled when Transfer is `disabled`. [#18849](https://github.com/ant-design/ant-design/pull/18849)
+- 🐞 Revert Dragger to class component to fix ref warning. [#18707](https://github.com/ant-design/ant-design/issues/18707)
+- 🐞 Fix Input `addonAfter` icon height bug in Chrome. [#18858](https://github.com/ant-design/ant-design/pull/18858)
+- 🐞 Fix Menu lost state when being collapsed to `0px`. [#18907](https://github.com/ant-design/ant-design/pull/18907)
+- 🐞 Disabled input should not trigger the action of suffix part. [#18900](https://github.com/ant-design/ant-design/pull/18900)
+- 🐞 Fix title and content of Alert not break line when long text exist. [#18929](https://github.com/ant-design/ant-design/pull/18929)
+- 💄 Add `@page-header-back-color` less variable. [#18887](https://github.com/ant-design/ant-design/pull/18887)
+- TypeScript
+  - 🐞 Fix Table event type definition. [#18910](https://github.com/ant-design/ant-design/pull/18910)
+
 ## 3.23.3
 
 `2019-09-16`
