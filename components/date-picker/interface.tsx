@@ -66,6 +66,7 @@ export type RangePickerValue =
   | undefined[]
   | [moment.Moment]
   | [undefined, moment.Moment]
+  | [moment.Moment, undefined]
   | [moment.Moment, moment.Moment];
 export type RangePickerPresetRange = RangePickerValue | (() => RangePickerValue);
 
