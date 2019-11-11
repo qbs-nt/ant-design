@@ -81,6 +81,7 @@
       ul {
         margin-right: 0.3em;
         margin-left: 0.3em;
+        padding: 0;
       }
     }
 
@@ -97,6 +98,7 @@
       cursor: pointer;
       transition: all 0.3s;
 
+      > .anticon:first-child,
       > span > .anticon:first-child {
         min-width: 12px;
         margin-right: 8px;
@@ -139,6 +141,7 @@
         line-height: 0;
         background-color: @border-color-split;
       }
+
       .@{dropdown-prefix-cls}-menu-submenu-arrow {
         position: absolute;
         right: @padding-xs;
@@ -148,6 +151,12 @@
           .iconfont-size-under-12px(10px);
         }
       }
+    }
+
+    &-item-group-list {
+      margin: 0 8px;
+      padding: 0;
+      list-style: none;
     }
 
     &-submenu-title {

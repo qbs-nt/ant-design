@@ -14,6 +14,8 @@ export interface PickerProps {
   disabled?: boolean;
   allowClear?: boolean;
   className?: string;
+  pickerClass?: string;
+  pickerInputClass?: string;
   suffixIcon?: React.ReactNode;
   style?: React.CSSProperties;
   popupStyle?: React.CSSProperties;
@@ -27,6 +29,8 @@ export interface PickerProps {
   dateRender?: DateRenderer;
   dateCellContentRender?: CellContentRenderer;
   autoFocus?: boolean;
+  onFocus?: React.FocusEventHandler;
+  onBlur?: (e: React.SyntheticEvent) => void;
 }
 
 export interface SinglePickerProps {
@@ -72,9 +76,11 @@ export type RangePickerPresetRange = RangePickerValue | (() => RangePickerValue)
 
 export interface RangePickerProps extends PickerProps {
   className?: string;
+  tagPrefixCls?: string;
   value?: RangePickerValue;
   defaultValue?: RangePickerValue;
   defaultPickerValue?: RangePickerValue;
+  timePicker?: React.ReactNode;
   onChange?: (dates: RangePickerValue, dateStrings: [string, string]) => void;
   onCalendarChange?: (dates: RangePickerValue, dateStrings: [string, string]) => void;
   onOk?: (selectedTime: RangePickerPresetRange) => void;
@@ -96,6 +102,8 @@ export interface RangePickerProps extends PickerProps {
   };
   onPanelChange?: (value?: RangePickerValue, mode?: string | string[]) => void;
   renderExtraFooter?: () => React.ReactNode;
+  onMouseEnter?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+  onMouseLeave?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
 }
 
 export interface WeekPickerProps extends PickerProps, SinglePickerProps {
