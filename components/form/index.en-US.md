@@ -47,7 +47,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 ### Form.create(options)
 
-How to use：
+How to use:
 
 ```jsx
 class CustomizedForm extends React.Component {}
@@ -210,7 +210,7 @@ Note: if Form.Item has multiple children that had been decorated by `getFieldDec
 
 | Property | Description | Type | Default Value | Version |
 | --- | --- | --- | --- | --- |
-| enum | validate a value from a list of possible values | string | - |  |
+| enum | validate a value from a list of possible values | string[] | - |  |
 | len | validate an exact length of a field | number | - |  |
 | max | validate a max length of a field | number | - |  |
 | message | validation error message | string\|ReactNode | - |  |
@@ -275,3 +275,38 @@ validator(rule, value, callback) => {
   }
 }
 ```
+
+### Get form instance from function component
+
+You can combine `forwardRef` with `useImperativeHandle` to get form instance:
+
+```tsx
+import React, { forwardRef, useImperativeHandle } from 'react';
+import Form, { FormComponentProps } from 'antd/lib/form/Form';
+
+const FCForm = forwardRef<FormComponentProps, FCFormProps>(({ form, onSubmit }, ref) => {
+  useImperativeHandle(ref, () => ({
+    form,
+  }));
+  `...the rest of your form`;
+});
+const EnhancedFCForm = Form.create<FCFormProps>()(FCForm);
+```
+
+You can use your form component like this：
+
+```tsx
+const TestForm = () => {
+  const formRef = createRef<Ref>();
+  return (
+    <EnhancedFCForm
+      onSubmit={() => console.log(formRef.current!.form.getFieldValue('name'))}
+      wrappedComponentRef={formRef}
+    />
+  );
+};
+```
+
+Online demo:
+
+[![Edit wrappedComponentRef-in-function-component](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/wrappedcomponentref-in-function-component-fj43c?fontsize=14&hidenavigation=1&theme=dark)

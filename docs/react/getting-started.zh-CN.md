@@ -11,9 +11,15 @@ Ant Design React 致力于提供给程序员**愉悦**的开发体验。
 
 ## 第一个例子
 
-这是一个最简单的 Ant Design 组件的在线演示。
+这是一个最简单的 Ant Design 组件的在线 codesandbox 演示。
 
-<iframe src="https://codesandbox.io/embed/wk04r016q8?fontsize=14" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+<iframe
+  src="https://codesandbox.io/embed/antd-reproduction-template-6e93z?autoresize=1&fontsize=14&hidenavigation=1&theme=dark"
+  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+  title="antd reproduction template"
+  allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb"
+  sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
+/>
 
 ### 1. 创建一个 codesandbox
 
@@ -155,6 +161,20 @@ import { Button } from 'antd';
 插件会帮你转换成 `antd/es/xxx` 的写法。另外此插件配合 [style](https://github.com/ant-design/babel-plugin-import#usage) 属性可以做到模块样式的按需自动加载。
 
 > 注意，babel-plugin-import 的 `style` 属性除了引入对应组件的样式，也会引入一些必要的全局样式。如果你不需要它们，建议不要使用此属性。你可以 `import 'antd/dist/antd.css'` 手动引入，并覆盖全局样式。
+
+## 使用 Day.js 替换 momentjs 优化打包大小
+
+你可以使用 [antd-dayjs-webpack-plugin](https://github.com/ant-design/antd-dayjs-webpack-plugin) 插件用 Day.js 替换 momentjs 来大幅减小打包大小。这需要更新 webpack 的配置文件如下：
+
+```js
+// webpack-config.js
+import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
+
+module.exports = {
+  // ...
+  plugins: [new AntdDayjsWebpackPlugin()],
+};
+```
 
 ## 配置主题和字体
 

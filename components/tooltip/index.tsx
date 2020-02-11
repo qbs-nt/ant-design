@@ -66,12 +66,12 @@ export interface AbstractTooltipProps {
 
 export type RenderFunction = () => React.ReactNode;
 
-interface TooltipPropsWithOverlay extends AbstractTooltipProps {
+export interface TooltipPropsWithOverlay extends AbstractTooltipProps {
   title?: React.ReactNode | RenderFunction;
   overlay: React.ReactNode | RenderFunction;
 }
 
-interface TooltipPropsWithTitle extends AbstractTooltipProps {
+export interface TooltipPropsWithTitle extends AbstractTooltipProps {
   title: React.ReactNode | RenderFunction;
   overlay?: React.ReactNode | RenderFunction;
 }
@@ -227,7 +227,15 @@ class Tooltip extends React.Component<TooltipProps, any> {
 
   isNoTitle() {
     const { title, overlay } = this.props;
-    return !title && !overlay; // overlay for old version compatibility
+    return !title && !overlay && title !== 0; // overlay for old version compatibility
+  }
+
+  getOverlay() {
+    const { title, overlay } = this.props;
+    if (title === 0) {
+      return title;
+    }
+    return overlay || title || '';
   }
 
   renderTooltip = ({
@@ -237,8 +245,6 @@ class Tooltip extends React.Component<TooltipProps, any> {
     const { props, state } = this;
     const {
       prefixCls: customizePrefixCls,
-      title,
-      overlay,
       openClassName,
       getPopupContainer,
       getTooltipContainer,
@@ -267,7 +273,7 @@ class Tooltip extends React.Component<TooltipProps, any> {
         getTooltipContainer={getPopupContainer || getTooltipContainer || getContextPopupContainer}
         ref={this.saveTooltip}
         builtinPlacements={this.getPlacements()}
-        overlay={overlay || title || ''}
+        overlay={this.getOverlay()}
         visible={visible}
         onVisibleChange={this.onVisibleChange}
         onPopupAlign={this.onPopupAlign}

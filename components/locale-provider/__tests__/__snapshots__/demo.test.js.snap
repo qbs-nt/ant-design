@@ -327,7 +327,6 @@ exports[`renders ./components/locale-provider/demo/all.md correctly 1`] = `
       >
         <input
           class="ant-time-picker-input"
-          id=""
           placeholder="Select time"
           type="text"
           value=""
@@ -1862,7 +1861,7 @@ exports[`renders ./components/locale-provider/demo/all.md correctly 1`] = `
                           </i>
                         </th>
                         <th
-                          class=""
+                          class="ant-table-row-cell-last"
                         >
                           <span
                             class="ant-table-header-column"

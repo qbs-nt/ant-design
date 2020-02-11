@@ -9,7 +9,7 @@ title: ConfigProvider
 
 ## Usage
 
-This component provides a configuration to all React components underneath itself via the [context API](https://facebook.github.io/react/docs/context.html), In the render tree all components will have access to the provided config.
+This component provides a configuration to all React components underneath itself via the [context API](https://facebook.github.io/react/docs/context.html). In the render tree all components will have access to the provided config.
 
 ```jsx
 import { ConfigProvider } from 'antd';
@@ -25,7 +25,7 @@ return (
 
 ### Content Security Policy
 
-Some component use dynamic style to support wave effect. You can config `csp` prop if Content Security Policy (CSP) is enabled:
+Some components use dynamic style to support wave effect. You can config `csp` prop if Content Security Policy (CSP) is enabled:
 
 ```jsx
 <ConfigProvider csp={{ nonce: 'YourNonceCode' }}>
@@ -47,6 +47,26 @@ Some component use dynamic style to support wave effect. You can config `csp` pr
 
 ## FAQ
 
-#### Locale problem is still existed in DatePicker even ConfigProvider `locale` is used?
+#### Does the locale problem still exist in DatePicker even if ConfigProvider `locale` is used?
 
-Please make sure you set moment locale by `moment.locale('zh-cn')`, or you don't have two moment of different version.
+Please make sure you set moment locale by `moment.locale('zh-cn')` or that you don't have two different versions of moment.
+
+#### Modal throw error when setting `getPopupContainer`?
+
+Related issue: https://github.com/ant-design/ant-design/issues/19974
+
+When you config `getPopupContainer` to parentNode globally, Modal will throw error of `triggerNode is undefined` because it did not have a triggerNode. You can try the [fix](https://github.com/afc163/feedback-antd/commit/3e4d1ad1bc1a38460dc3bf3c56517f737fe7d44a) below.
+
+```diff
+ <ConfigProvider
+-  getPopupContainer={triggerNode => triggerNode.parentNode}
++  getPopupContainer={node => {
++    if (node) {
++      return node.parentNode;
++    }
++    return document.body;
++  }}
+ >
+   <App />
+ </ConfigProvider>
+```

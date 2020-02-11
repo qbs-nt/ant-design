@@ -271,7 +271,7 @@ class Table<T> extends React.Component<InternalTableProps<T>, TableState<T>> {
     this.state = {
       ...this.getDefaultSortOrder(columns || []),
       // 减少状态
-      filters: getFiltersFromColumns<T>(),
+      filters: this.getDefaultFilters(columns),
       pagination: this.getDefaultPagination(props),
       pivot: undefined,
       prevProps: props,
@@ -353,6 +353,26 @@ class Table<T> extends React.Component<InternalTableProps<T>, TableState<T>> {
       columns || (this.state || {}).columns || [],
       (column: ColumnProps<T>) => 'sortOrder' in column,
     );
+  }
+
+  getDefaultFilters(columns?: ColumnProps<T>[]) {
+    const definedFilters = getFiltersFromColumns(this.state, columns);
+
+    const defaultFilteredValueColumns = flatFilter(
+      columns || [],
+      (column: ColumnProps<T>) => typeof column.defaultFilteredValue !== 'undefined',
+    );
+
+    const defaultFilters = defaultFilteredValueColumns.reduce(
+      (soFar: { [s: string]: any }, col: ColumnProps<T>) => {
+        const colKey = getColumnKey(col) as string;
+        soFar[colKey] = col.defaultFilteredValue;
+        return soFar;
+      },
+      {},
+    );
+
+    return { ...defaultFilters, ...definedFilters };
   }
 
   getDefaultSortOrder(columns?: ColumnProps<T>[]) {
@@ -848,7 +868,6 @@ class Table<T> extends React.Component<InternalTableProps<T>, TableState<T>> {
   };
 
   toggleSortOrder(column: ColumnProps<T>) {
-    const pagination = { ...this.state.pagination };
     const sortDirections = column.sortDirections || (this.props.sortDirections as SortOrder[]);
     const { sortOrder, sortColumn } = this.state;
     // 只同时允许一列进行排序，否则会导致排序顺序的逻辑问题
@@ -863,14 +882,7 @@ class Table<T> extends React.Component<InternalTableProps<T>, TableState<T>> {
       newSortOrder = sortDirections[0];
     }
 
-    if (this.props.pagination) {
-      // Reset current prop
-      pagination.current = 1;
-      pagination.onChange!(pagination.current);
-    }
-
     const newState = {
-      pagination,
       sortOrder: newSortOrder,
       sortColumn: newSortOrder ? column : null,
     };

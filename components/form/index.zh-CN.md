@@ -212,7 +212,7 @@ validateFields(['field1', 'field2'], options, (errors, values) => {
 
 | 参数 | 说明 | 类型 | 默认值 | 版本 |
 | --- | --- | --- | --- | --- |
-| enum | 枚举类型 | string | - |  |
+| enum | 枚举类型 | string[] | - |  |
 | len | 字段长度 | number | - |  |
 | max | 最大长度 | number | - |  |
 | message | 校验文案 | string\|ReactNode | - |  |
@@ -277,3 +277,38 @@ validator(rule, value, callback) => {
   }
 }
 ```
+
+### 如何在函数组件中拿到 form 实例？
+
+你需要通过 `forwardRef` 和 `useImperativeHandle` 的组合使用来实现在函数组件中正确拿到 form 实例：
+
+```tsx
+import React, { forwardRef, useImperativeHandle } from 'react';
+import Form, { FormComponentProps } from 'antd/lib/form/Form';
+
+const FCForm = forwardRef<FormComponentProps, FCFormProps>(({ form, onSubmit }, ref) => {
+  useImperativeHandle(ref, () => ({
+    form,
+  }));
+  `...the rest of your form`;
+});
+const EnhancedFCForm = Form.create<FCFormProps>()(FCForm);
+```
+
+使用表单组件可以写成这样：
+
+```tsx
+const TestForm = () => {
+  const formRef = createRef<Ref>();
+  return (
+    <EnhancedFCForm
+      onSubmit={() => console.log(formRef.current!.form.getFieldValue('name'))}
+      wrappedComponentRef={formRef}
+    />
+  );
+};
+```
+
+在线示例：
+
+[![Edit wrappedComponentRef-in-function-component](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/wrappedcomponentref-in-function-component-fj43c?fontsize=14&hidenavigation=1&theme=dark)

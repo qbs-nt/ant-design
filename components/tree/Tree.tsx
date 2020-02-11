@@ -70,7 +70,7 @@ export interface AntTreeNodeExpandedEvent extends AntTreeNodeBaseEvent {
 
 export interface AntTreeNodeMouseEvent {
   node: AntTreeNode;
-  event: React.MouseEvent<HTMLElement>;
+  event: React.DragEvent<HTMLElement>;
 }
 
 export interface AntTreeNodeDragEnterEvent extends AntTreeNodeMouseEvent {
@@ -195,28 +195,23 @@ export default class Tree extends React.Component<TreeProps, any> {
       return <Icon type="loading" className={`${prefixCls}-switcher-loading-icon`} />;
     }
     if (isLeaf) {
-      if (showLine) {
-        return <Icon type="file" className={`${prefixCls}-switcher-line-icon`} />;
-      }
-      return null;
+      return showLine ? <Icon type="file" className={`${prefixCls}-switcher-line-icon`} /> : null;
     }
     const switcherCls = `${prefixCls}-switcher-icon`;
     if (switcherIcon) {
-      const switcherOriginCls = switcherIcon.props.className || '';
       return React.cloneElement(switcherIcon, {
-        className: classNames(switcherOriginCls, switcherCls),
+        className: classNames(switcherIcon.props.className || '', switcherCls),
       });
     }
-    if (showLine) {
-      return (
-        <Icon
-          type={expanded ? 'minus-square' : 'plus-square'}
-          className={`${prefixCls}-switcher-line-icon`}
-          theme="outlined"
-        />
-      );
-    }
-    return <Icon type="caret-down" className={switcherCls} theme="filled" />;
+    return showLine ? (
+      <Icon
+        type={expanded ? 'minus-square' : 'plus-square'}
+        className={`${prefixCls}-switcher-line-icon`}
+        theme="outlined"
+      />
+    ) : (
+      <Icon type="caret-down" className={switcherCls} theme="filled" />
+    );
   };
 
   setTreeRef = (node: any) => {

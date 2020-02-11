@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'bisheng/router';
-import { Row, Col, Menu, Icon, Affix } from 'antd';
+import { Row, Col, Menu, Icon, Affix, Tooltip, Avatar } from 'antd';
+import ContributorsList from '@qixian.cs/github-contributors-list';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import get from 'lodash/get';
@@ -283,7 +284,12 @@ class MainContent extends Component {
   render() {
     const { isMobile } = this.context;
     const { openKeys } = this.state;
-    const { localizedPageData, demos } = this.props;
+    const {
+      localizedPageData,
+      demos,
+      intl: { formatMessage },
+    } = this.props;
+    const { meta } = localizedPageData;
     const activeMenuItem = this.getActiveMenuItem();
     const menuItems = this.getMenuItems();
     const menuItemsForFooterNav = this.getMenuItems({
@@ -310,30 +316,49 @@ class MainContent extends Component {
       <div className="main-wrapper">
         <Row>
           {isMobile ? (
-            <MobileMenu
-              iconChild={[
-                <Icon key="menu-unfold" type="menu-unfold" />,
-                <Icon key="menu-fold" type="menu-fold" />,
-              ]}
-              key="Mobile-menu"
-              wrapperClassName="drawer-wrapper"
-            >
+            <MobileMenu key="Mobile-menu" wrapperClassName="drawer-wrapper">
               {menuChild}
             </MobileMenu>
           ) : (
-            <Col xxl={4} xl={5} lg={6} md={24} sm={24} xs={24} className="main-menu">
+            <Col xxl={4} xl={5} lg={6} md={6} sm={24} xs={24} className="main-menu">
               <Affix>
                 <section className="main-menu-inner">{menuChild}</section>
               </Affix>
             </Col>
           )}
-          <Col xxl={20} xl={19} lg={18} md={24} sm={24} xs={24}>
+          <Col xxl={20} xl={19} lg={18} md={18} sm={24} xs={24}>
             <section className={mainContainerClass}>
               {demos ? (
                 <ComponentDoc {...this.props} doc={localizedPageData} demos={demos} />
               ) : (
                 <Article {...this.props} content={localizedPageData} />
               )}
+              <ContributorsList
+                className="contributors-list"
+                fileName={meta.filename}
+                renderItem={(item, loading) =>
+                  loading ? (
+                    <Avatar style={{ opacity: 0.3 }} />
+                  ) : (
+                    <Tooltip
+                      title={`${formatMessage({ id: 'app.content.contributors' })}: ${
+                        item.username
+                      }`}
+                      key={item.username}
+                    >
+                      <a
+                        href={`https://github.com/${item.username}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Avatar src={item.url}>{item.username}</Avatar>
+                      </a>
+                    </Tooltip>
+                  )
+                }
+                repo="ant-design"
+                owner="ant-design"
+              />
             </section>
             <PrevAndNext prev={prev} next={next} />
             <Footer />

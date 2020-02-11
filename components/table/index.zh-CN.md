@@ -67,7 +67,7 @@ const columns = [
 | tableLayout | 表格元素的 [table-layout](https://developer.mozilla.org/zh-CN/docs/Web/CSS/table-layout) 属性，设为 `fixed` 表示内容不会影响列的布局 | - \| 'auto' \| 'fixed' | 无<hr />固定表头/列或使用了 `column.ellipsis` 时，默认值为 `fixed` | 3.24.0 |
 | bordered | 是否展示外边框和列边框 | boolean | false |  |
 | childrenColumnName | 指定树形结构的列名 | string\[] | children | 3.4.2 |
-| columns | 表格列的配置描述，具体项见下表 | [ColumnProps](https://git.io/vMMXC)\[] | - |  |
+| columns | 表格列的配置描述，具体项见下表 | [ColumnProps](https://git.io/JeKZW)\[] | - |  |
 | components | 覆盖默认的 table 元素 | [TableComponents](https://git.io/fANxz) | - |  |
 | dataSource | 数据数组 | any\[] |  |  |
 | defaultExpandAllRows | 初始时，是否展开所有行 | boolean | false |  |
@@ -129,6 +129,7 @@ const columns = [
 | className | 列样式类名 | string | - |  |
 | colSpan | 表头列合并,设置为 0 时，不渲染 | number |  |  |
 | dataIndex | 列数据在数据项中对应的 key，支持 `a.b.c`、`a[0].b.c[1]` 的嵌套写法 | string | - |  |
+| defaultFilteredValue | 默认筛选值 | string\[] | - |  |
 | defaultSortOrder | 默认排序顺序 | 'ascend' \| 'descend' | - | 3.9.3 |
 | filterDropdown | 可以自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互 | React.ReactNode \| (props: [FilterDropdownProps](https://git.io/fjP5h)) => React.ReactNode | - |
 | filterDropdownVisible | 用于控制自定义筛选菜单是否可见 | boolean | - |  |

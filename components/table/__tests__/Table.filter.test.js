@@ -3,6 +3,7 @@ import React from 'react';
 import { render, mount } from 'enzyme';
 import Table from '..';
 import Input from '../../input';
+import Tooltip from '../../tooltip';
 import Button from '../../button';
 import ConfigProvider from '../../config-provider';
 
@@ -279,6 +280,58 @@ describe('Table.filter', () => {
       columns: [
         {
           ...column,
+          filteredValue: null,
+        },
+      ],
+    });
+    expect(wrapper.find('tbody tr').length).toBe(4);
+  });
+
+  it('can read defaults from defaultFilteredValue', () => {
+    const wrapper = mount(
+      createTable({
+        columns: [
+          {
+            ...column,
+            defaultFilteredValue: ['Lucy'],
+          },
+        ],
+      }),
+    );
+    expect(wrapper.find('tbody tr').length).toBe(1);
+    expect(wrapper.find('tbody tr').text()).toBe('Lucy');
+
+    // Should properly ignore further defaultFilteredValue changes
+    wrapper.setProps({
+      columns: [
+        {
+          ...column,
+          defaultFilteredValue: [],
+        },
+      ],
+    });
+    expect(wrapper.find('tbody tr').length).toBe(1);
+    expect(wrapper.find('tbody tr').text()).toBe('Lucy');
+
+    // Should properly be overidden by non-null filteredValue
+    wrapper.setProps({
+      columns: [
+        {
+          ...column,
+          defaultFilteredValue: ['Lucy'],
+          filteredValue: ['Tom'],
+        },
+      ],
+    });
+    expect(wrapper.find('tbody tr').length).toBe(1);
+    expect(wrapper.find('tbody tr').text()).toBe('Tom');
+
+    // Should properly be overidden by a null filteredValue
+    wrapper.setProps({
+      columns: [
+        {
+          ...column,
+          defaultFilteredValue: ['Lucy'],
           filteredValue: null,
         },
       ],
@@ -586,6 +639,40 @@ describe('Table.filter', () => {
       .first()
       .simulate('click');
     expect(wrapper.find('.ant-table-filter-icon').render()).toMatchSnapshot();
+  });
+
+  it('renders custom filter icon as string correctly', () => {
+    const filterIcon = () => 'string';
+    const wrapper = mount(
+      createTable({
+        columns: [
+          {
+            ...column,
+            filterIcon,
+          },
+        ],
+      }),
+    );
+    expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('renders custom filter icon with right Tooltip title', () => {
+    const filterIcon = () => (
+      <Tooltip title="title" visible>
+        Tooltip
+      </Tooltip>
+    );
+    const wrapper = mount(
+      createTable({
+        columns: [
+          {
+            ...column,
+            filterIcon,
+          },
+        ],
+      }),
+    );
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   // https://github.com/ant-design/ant-design/issues/13028
