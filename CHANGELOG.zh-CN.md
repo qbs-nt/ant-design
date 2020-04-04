@@ -15,6 +15,63 @@ timeline: true
 
 ---
 
+## 3.26.15
+
+`2020-04-03`
+
+- 🐞 修复 Affix 抛出 `React state update on unmounted component` 警告的问题。[#22790](https://github.com/ant-design/ant-design/pull/22790)
+- 🐞 修复 Table `column.filtered` 失效的问题。[#22597](https://github.com/ant-design/ant-design/pull/22597)
+- 🐞 修复 Select `multiple` 模式下，Input 在 Safari 浏览器的样式问题。[#22586](https://github.com/ant-design/ant-design/pull/22586) [@iicdii](https://github.com/iicdii)
+
+## 3.26.14
+
+`2020-03-23`
+
+- 🐞 Fix Descriptions cannot fit to small container width. [#22407](https://github.com/ant-design/ant-design/pull/22407)
+- 🐞 Fix TextArea `autoSize` don't scroll bottom in Firefox. [#22014](https://github.com/ant-design/ant-design/pull/22014)
+- 🐞 Fix TextArea style get warning in `react@16.13`. [#21703](https://github.com/ant-design/ant-design/pull/21703)
+- Typescript
+  - Adjust Popconfirm `onConfirm` `onCancel` event definition. [#22438](https://github.com/ant-design/ant-design/pull/22438) [@nicu-chiciuc](https://github.com/nicu-chiciuc)
+
+## 3.26.13
+
+`2020-03-07`
+
+- 🐞 修复 Result `status` 属性不能赋值 `string` 或者 `number` 类型的问题。[#21691](https://github.com/ant-design/ant-design/pull/21691)
+- 🐞 修复 Badge 数字在 10 和 11 切换时的动画错误。[#21887](https://github.com/ant-design/ant-design/pull/21887) [@wendellhu95](https://github.com/wendellhu95)
+- 🐞 修复 DatePicker 日历图标在禁用时的手型。[#21655](https://github.com/ant-design/ant-design/pull/21655) [@jhoneybee](https://github.com/jhoneybee)
+- 🐞 修复 Grid 多个 Row 之间的边距叠加问题。[#21518](https://github.com/ant-design/ant-design/pull/21518) [@felipeptcho](https://github.com/felipeptcho)
+- 🐞 修复 Table 筛选菜单高度溢出屏幕的问题。[#21602](https://github.com/ant-design/ant-design/pull/21602)
+
+## 3.26.12
+
+`2020-02-24`
+
+- 🐞 修复 Input 在设置 `readOnly` 时 `allowClear` 仍然可以清除的问题。[#21492](https://github.com/ant-design/ant-design/pull/21492)
+- 🐞 修复 Upload 列表默认情况下不展现下载按钮。[#21496](https://github.com/ant-design/ant-design/pull/21496)
+- ⚡️ 提升 Button 渲染性能。[#21217](https://github.com/ant-design/ant-design/pull/21217)
+
+## 3.26.11
+
+`2020-02-17`
+
+- 🐞 回滚原子样式 `clearfix` 以修复破坏 flex 布局的问题（主要影响 Row、Form、Layout 等布局问题）。[#21406](https://github.com/ant-design/ant-design/pull/21406)
+
+## 3.26.10
+
+`2020-02-16`
+
+- 🐞 修复 `<Form layout="vertical" >` 内 Input.Group 偏上一像素的问题。[#20685](https://github.com/ant-design/ant-design/pull/20685)
+- 🐞 修复 Badge 包裹模式下 `color` 属性失效的问题。[#21333](https://github.com/ant-design/ant-design/pull/21333)
+- 🐞 修复 Alert 关闭按钮额外的 `padding`。[#21325](https://github.com/ant-design/ant-design/pull/21325)
+- 🐞 修复 Affix 在移动设备下抛错 `Cannot read property getBoundingClientRect` 的问题。[#21350](https://github.com/ant-design/ant-design/pull/21350)
+- 💄 微调 Steps 文本 1px 使其居中对齐。[#21306](https://github.com/ant-design/ant-design/pull/21306)
+- 💄 修复 Row 组件影响下一个元素样式问题。[#21310](https://github.com/ant-design/ant-design/pull/21310)
+- Typescript
+  - 🔷 回滚 [#21250](https://github.com/ant-design/ant-design/pull/21250) 的类型定义更新。[#21356](https://github.com/ant-design/ant-design/pull/21356)
+
+## 3.26.9
+
 `2020-02-08`
 
 - 🐞 修复 Badge 在 Typography 下数字错位的问题。[#21237](https://github.com/ant-design/ant-design/pull/21237)

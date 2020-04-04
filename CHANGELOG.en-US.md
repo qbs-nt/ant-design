@@ -15,6 +15,61 @@ timeline: true
 
 ---
 
+## 3.26.15
+
+`2020-04-03`
+
+- 🐞 Fix Affix throws `React warning of state update on unmounted component`. [#22790](https://github.com/ant-design/ant-design/pull/22790)
+- 🐞 Fix Table `column.filtered` not working. [#22597](https://github.com/ant-design/ant-design/pull/22597)
+- 🐞 Fix Select Input style with `multiple` mode in Safari. [#22586](https://github.com/ant-design/ant-design/pull/22586) [@iicdii](https://github.com/iicdii)
+
+## 3.26.14
+
+`2020-03-23`
+
+- 🐞 修复 Descriptions 在小尺寸下无法自适应的问题。[#22407](https://github.com/ant-design/ant-design/pull/22407)
+- 🐞 修复 TextArea `autoSize` 时在 Firefox 下不会自动滚动到底的问题。[#22014](https://github.com/ant-design/ant-design/pull/22014)
+- 🐞 修复 TextArea 样式在 `react@16.13` 下会报警告的问题。[#21703](https://github.com/ant-design/ant-design/pull/21703)
+- Typescript
+  - 调整 Popconfirm `onConfirm` `onCancel` 事件类型定义。[#22438](https://github.com/ant-design/ant-design/pull/22438) [@nicu-chiciuc](https://github.com/nicu-chiciuc)
+
+## 3.26.13
+
+`2020-03-07`
+
+- 🐞 Fix Result `status` cannot assigned to `string` or `number` type. [#21691](https://github.com/ant-design/ant-design/pull/21691)
+- 🐞 Fix Badge animation when switch between 10 and 11. [#21887](https://github.com/ant-design/ant-design/pull/21887) [@wendellhu95](https://github.com/wendellhu95)
+- 🐞 Fix DatePicker disabled icon cursor style. [#21655](https://github.com/ant-design/ant-design/pull/21655) [@jhoneybee](https://github.com/jhoneybee)
+- 🐞 Fix Grid multiple Rows `margin` overlapping. [#21518](https://github.com/ant-design/ant-design/pull/21518) [@felipeptcho](https://github.com/felipeptcho)
+- 🐞 Fix Table filter menu max height with many items. [#21602](https://github.com/ant-design/ant-design/pull/21602)
+
+## 3.26.12
+
+`2020-02-24`
+
+- 🐞 Fix Input with `readOnly` still clearable by `allowClear`. [#21492](https://github.com/ant-design/ant-design/pull/21492)
+- 🐞 Fix Upload won't showing download icon defaultly. [#21496](https://github.com/ant-design/ant-design/pull/21496)
+- ⚡️ Improve Button render performance. [#21217](https://github.com/ant-design/ant-design/pull/21217)
+
+## 3.26.11
+
+`2020-02-17`
+
+- 🐞 Rollback misc `clearfix` style to breaks flex layout (mainly affect Row, Form, Layout style). [#21406](https://github.com/ant-design/ant-design/pull/21406)
+
+## 3.26.10
+
+`2020-02-16`
+
+- 🐞 Fix Input.Group inside `<Form layout="vertical" >` 1px bug. [#20685](https://github.com/ant-design/ant-design/pull/20685)
+- 🐞 Fix Badge `color` not working when contains children. [#21333](https://github.com/ant-design/ant-design/pull/21333)
+- 🐞 Fix Alert close button extra `padding`. [#21325](https://github.com/ant-design/ant-design/pull/21325)
+- 🐞 Fix Affix throws `Cannot read property getBoundingClientRect in mobile device`. [#21350](https://github.com/ant-design/ant-design/pull/21350)
+- 💄 Tweak Steps 1px align issue. [#21306](https://github.com/ant-design/ant-design/pull/21306)
+- 💄 Fix Row component affect next element style issue. [#21310](https://github.com/ant-design/ant-design/pull/21310)
+- Typescript
+  - 🔷 Revert [#21250](https://github.com/ant-design/ant-design/pull/21250) Type Definition Update.[#21356](https://github.com/ant-design/ant-design/pull/21356)
+
 ## 3.26.9
 
 `2020-02-08`

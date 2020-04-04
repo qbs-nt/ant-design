@@ -116,6 +116,8 @@ class Affix extends React.Component<AffixProps, AffixState> {
     clearTimeout(this.timeout);
     removeObserveTarget(this);
     (this.updatePosition as any).cancel();
+    // https://github.com/ant-design/ant-design/issues/22683
+    (this.lazyUpdatePosition as any).cancel();
   }
 
   getOffsetTop = () => {
@@ -239,7 +241,7 @@ class Affix extends React.Component<AffixProps, AffixState> {
       const offsetBottom = this.getOffsetBottom();
 
       const targetNode = target();
-      if (targetNode) {
+      if (targetNode && this.placeholderNode) {
         const targetRect = getTargetRect(targetNode);
         const placeholderReact = getTargetRect(this.placeholderNode);
         const fixedTop = getFixedTop(placeholderReact, targetRect, offsetTop);
