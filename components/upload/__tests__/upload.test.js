@@ -293,7 +293,7 @@ describe('Upload', () => {
   });
 
   // https://github.com/ant-design/ant-design/issues/16478
-  it('should not have id if upload is disabled, avoid being triggered by label', () => {
+  it('should not have id if Upload is disabled, avoid being triggered by label', () => {
     // eslint-disable-next-line
     class Demo extends React.Component {
       render() {
@@ -310,6 +310,37 @@ describe('Upload', () => {
                 <Upload disabled={disabled}>
                   <div>upload</div>
                 </Upload>,
+              )}
+            </Form.Item>
+          </Form>
+        );
+      }
+    }
+    const WrappedDemo = Form.create()(Demo);
+    const wrapper = mount(<WrappedDemo />);
+    expect(wrapper.find('input#upload').length).toBe(1);
+    wrapper.setProps({ disabled: true });
+    expect(wrapper.find('input#upload').length).toBe(0);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/24197
+  it('should not have id if Upload.Dragger is disabled, avoid being triggered by label', () => {
+    // eslint-disable-next-line
+    class Demo extends React.Component {
+      render() {
+        const {
+          form: { getFieldDecorator },
+          disabled,
+        } = this.props;
+        return (
+          <Form>
+            <Form.Item label="Upload">
+              {getFieldDecorator('upload', {
+                valuePropName: 'fileList',
+              })(
+                <Upload.Dragger disabled={disabled}>
+                  <div>upload</div>
+                </Upload.Dragger>,
               )}
             </Form.Item>
           </Form>
