@@ -26,7 +26,7 @@ async function checkVersion() {
 async function checkBranch({ current }) {
   if (current !== '3.x-stable') {
     console.log(chalk.yellow('🤔 You are not in the master branch!'));
-    exitProcess();
+    // exitProcess();
   }
 }
 
@@ -36,7 +36,7 @@ async function checkCommit({ files }) {
     files.forEach(({ path: filePath, working_dir: mark }) => {
       console.log(' -', chalk.red(mark), filePath);
     });
-    exitProcess();
+    // exitProcess();
   }
 }
 
@@ -59,7 +59,7 @@ async function checkAll() {
 
   await checkCommit(status);
 
-  await checkRemote();
+  // await checkRemote();
 }
 
 checkAll();
