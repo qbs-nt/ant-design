@@ -1,8 +1,6 @@
 # README qbus
 
-build mit ./build.sh
-
-## Upstream releases übernehmen
+## HOWTO: Upstream releases übernehmen, bauen und publishen
 
 WICHTIG: wir arbeiten noch mit ant-design 3, während mittlerweile ant-design 4 released wurde. Daher müssen wir immer im 3.x-stable branch arbeiten.
 
