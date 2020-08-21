@@ -4,7 +4,13 @@ build mit ./build.sh
 
 ## Upstream releases übernehmen
 
-git fetch --all --tags -p git checkout master git merge 3.18.1
+WICHTIG: wir arbeiten noch mit ant-design 3, während mittlerweile ant-design 4 released wurde. Daher müssen wir immer im 3.x-stable branch arbeiten.
+
+```bash
+git fetch --all --tags -p
+git checkout 3.x-stable
+git merge 3.18.1
+```
 
 - conflicts resolven (auf jeden fall bei package.json wegen eigenen versionsnummern) vi package.json # -> dort bei "version" noch -obg.1 anhängen, also 3.18.1 -> 3.18.1-obg.1 (bei späteren patches -obg.2 etc.)
 
