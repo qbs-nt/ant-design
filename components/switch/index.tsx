@@ -15,6 +15,7 @@ export type SwitchClickEventHandler = SwitchChangeEventHandler;
 export interface SwitchProps {
   prefixCls?: string;
   size?: SwitchSize;
+  id?: string;
   className?: string;
   checked?: boolean;
   defaultChecked?: boolean;
