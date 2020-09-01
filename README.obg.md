@@ -2,11 +2,11 @@
 
 ## HOWTO: Upstream releases übernehmen, bauen und publishen
 
-WICHTIG: wir arbeiten noch mit ant-design 3, während mittlerweile ant-design 4 released wurde. Daher müssen wir immer im 3.x-stable branch arbeiten.
+WICHTIG: wir arbeiten noch mit ant-design 3, während mittlerweile ant-design 4 released wurde. Unser master Branch enthält noch den 3.x Code plus unsere Änderungen. upstream/master ist jedoch - wie bereits geschrieben - schon auf 4.x (oder später). Daher müssen wir immer mit 3.x.x Tags oder 3.x-stable branch mergen. Wir dürfen NIE mit upstream/master Branch mergen (es sei denn wir schaffen den Sprung auf 4.x (oder später))
 
 ```bash
 git fetch --all --tags -p
-git checkout 3.x-stable
+git checkout master
 git merge 3.18.1
 ```
 
