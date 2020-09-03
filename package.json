@@ -1,6 +1,6 @@
 {
-  "name": "antd",
-  "version": "3.26.19-obg.5",
+  "name": "@qbs-nt/antd",
+  "version": "3.26.19-qbsnt.5",
   "description": "An enterprise-class UI design language and React components implementation",
   "keywords": [
     "ant",
